@@ -84,6 +84,7 @@ const common_settings = {
         new HtmlWebpackPlugin({
             filename: path.resolve(__dirname, 'dkdj/templates/dkdj/include-scripts.html'),
             inject: false,
+            minify: false,
             template: path.resolve(__dirname, 'src/html-webpack-plugin-django-template.html')
         }),
         new MiniCssExtractPlugin({
