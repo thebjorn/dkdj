@@ -21,7 +21,7 @@ test("test-radiowidget", () => {
             id="radio-input-widget" 
             name="radio_input_widget_1" 
             type="radio" 
-            dk-value="a">
+            value="a">
     `));
     
     w.checked = true;
@@ -34,7 +34,7 @@ test("test-radiowidget", () => {
             id="radio-input-widget" 
             name="radio_input_widget_1" 
             type="radio" 
-            dk-value="a">
+            value="a">
     `));
 
 });

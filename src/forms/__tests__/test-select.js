@@ -18,12 +18,14 @@ test("select-widget", () => {
         } 
     });
     // console.log(w);
-    console.log("1:W:DATA:", w.data, "W:VALUE", w.value, "W:_SELECTED:", w._selected);
-    
-    work.find('option[value=1]').click().change();
+    console.log("SELECT:WIDGET:WORK:", work.html());
+    // console.log("1:W:DATA:", w.data, "W:VALUE", w.value, "W:_SELECTED:", w._selected);
+    work.find('option[value=1]')
+        .prop('selected', true)
+        .trigger('change');
     
     console.log("2:W:DATA:", w.data, "W:VALUE", w.value, "W:_SELECTED:", w._selected);
-    console.log(work.html());
+    // console.log(work.html());
     expect(w.value).toEqual(['1']);
     
     // expect(w.formatted_value()).toBe('hello');
@@ -56,7 +58,9 @@ test("select-widget-string-values", () => {
     console.log("W:SELECTED:", w._selected);
     console.log("W:GET_VALUE_FROM_SELECTED:", w._get_value_from_selected());
     console.log("W:DATA:", w.data);
-    work.find('option[value=1]').click().change();
+    work.find('option[value=1]')
+        .prop('selected', true)
+        .trigger('change');
     console.log(work.html());
     console.log("W:VALUE:", w.value);
     console.log("W:SELECTED:", w._selected);

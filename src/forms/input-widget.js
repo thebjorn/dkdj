@@ -1,5 +1,6 @@
 import {Widget} from "../widgetcore/dk-widget";
 import dk from "../dk-obj";
+// import $ from 'jquery';
 
 export class InputWidget extends Widget {   // XXX: should it be UIWidget or DataWidget instead?
     /*
@@ -140,10 +141,18 @@ export class InputWidget extends Widget {   // XXX: should it be UIWidget or Dat
     widget_changed(event) {
         this._status.updating_from_widget = true;
         if (event.type === 'change') {
-            // console.log("WIDGET:CHANGED:UPDATING value", event.item.value, this._status);
-            this.value = event.item.value;
+            // console.log("WIDGET:CHANGED:UPDATING value:EVENT", event);
+            // console.log("WIDGET:CHANGED:UPDATING value:ITEM", event.item);
+            // console.log("WIDGET:CHANGED:UPDATING value:VALUE", event.item.value);
+            // console.log("WIDGET:CHANGED:UPDATING value:STATUS", this._status);
+            // console.log("WIDGET:CHANGED:UPDATING value:data", this.data);
+            // event.item is this from the jquery event handler
+            this.value = event.item.value;  
         }
         this._status.updating_from_widget = false;
+        // console.log("WIDGET:CHANGED:END_STATUS:", this.data);
+        // console.log("WIDGET:CHANGED:END_STATUS:", this.options);
+        // console.log("WIDGET:CHANGED:END_STATUS:", this._selected);
     }
 
     /**
@@ -165,6 +174,8 @@ export class InputWidget extends Widget {   // XXX: should it be UIWidget or Dat
     handlers() {
         const self = this;
         this.widget().on('change input blur', function (e) {
+            // console.log("HANDLERS:CHANGE:", this);
+            // console.log("HANDLERS:CHANGE:VALUE", this.value);
             self.widget_changed({
                 type: 'change',
                 event: e,
