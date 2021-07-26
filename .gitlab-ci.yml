@@ -3,7 +3,6 @@ include:
   - project: 'norsktest/dktools'
     file: '/ci-templates/dkbuild.yml'
 
-    
 jstests:
   stage: test
   image: thebjorn/dknode2:latest
