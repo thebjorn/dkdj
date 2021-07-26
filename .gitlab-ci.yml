@@ -13,6 +13,7 @@ jstests:
   script:
     - npm install -g codecov
     - npm install -g jest
+    - npm install -g node-notifier
     - yarn
     - jest --coverage
   after_script:
@@ -30,11 +31,6 @@ jsbuild:
   #   - ...
   dependencies:
     - jstests    
-
-py27dj18:
-  extends: .testpackage
-  script:
-    - dk testpackage --ci --django=1.8.19 --tag=py27-dj18
 
 py35dj18:
   extends: .testpackage
