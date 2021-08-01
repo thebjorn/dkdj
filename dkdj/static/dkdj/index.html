@@ -219,12 +219,12 @@
         });
         dk.TreeWidget.create_inside('#tree1', {
             initial_collapse: false,
-            data: ds,
+            tree_data: ds,
             // selectable: ['department'],
             // multiselect: false
         });
         ttree = dk.TableTree.create_inside('#tree2', {
-            data: ds,
+            tree_data: ds,
             selectable: ['company', 'department'],
             multiselect: false
             // title: 'hello world'

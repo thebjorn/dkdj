@@ -71,7 +71,7 @@ const common_settings = {
     //     // })
     // ],
     externals: {
-        jquery: 'jQuery',
+        jQuery: 'jquery',
     }
 };
 

@@ -8,7 +8,7 @@
     "document": true,
     "performance": true,
     "$": true,
-    "jQuery": true,
+    "jquery": true,
     "_": true,
     "test": true,
     "expect": true,
