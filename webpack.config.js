@@ -101,7 +101,7 @@ const common_settings = {
         // })
     ],
     externals: {
-        jQuery: 'jquery',
+        jquery: 'jQuery',
         pusher: 'pusher',
     }
 };
