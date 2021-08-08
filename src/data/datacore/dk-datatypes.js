@@ -50,31 +50,23 @@ export function dkdatatype({tag}) {
                     enumerable: true,
                     writable: false
                 },
-                // initialize: () => v  // version=jan-2019 
-                initializer: () => v    // version=nov-2018
+                initializer: () => v 
             });
         });
         return {
             kind: 'class',
-            // kind: 'hook',
             elements: cls.elements,
-            finisher(cls) {             // version=nov-2018
+            finisher(cls) {
                 _datatypes[tag] = cls;
             }
-            // extras: [{               // version=jan-2019
-            //     kind: 'hook',
-            //     placement: 'static',
-            //     finish(cls) {
-            //         _datatypes[tag] = cls;
-            //     }
-            // }]
         };
     };
 }
 
 
-export @dkdatatype({tag: '@date:'})
-class DkDate extends datatype {
+// @dkdatatype({tag: '@date:'})
+export class DkDate extends datatype {
+    tag = '@date:';
     days = ['søndag', 'mandag', 'tirsdag', 'onsdag', 'torsdag', 'fredag', 'lørdag'];
     
     constructor(...args) {
@@ -130,8 +122,10 @@ class DkDate extends datatype {
 // _datatypes[DkDate.tag] = DkDate;
 
 
-export @dkdatatype({tag: '@datetime:'})
-class DateTime extends DkDate {
+// @dkdatatype({tag: '@datetime:'})
+export class DateTime extends DkDate {
+    tag = '@datetime:';
+    
     constructor(...args) {
         // '2014-03-11T08:18:07.543000'
         super();
@@ -187,8 +181,10 @@ class DateTime extends DkDate {
 // _datatypes[DateTime.tag] = DkDate;
 
 
-export @dkdatatype({tag: '@duration:'})
-class Duration extends datatype {
+// @dkdatatype({tag: '@duration:'})
+export class Duration extends datatype {
+    tag = '@duration:';
+    
     constructor(v) {
         super();
         if (v instanceof Duration) {
@@ -247,9 +243,14 @@ class Duration extends datatype {
 // _datatypes[Duration.tag] = Duration;
 
 
+function _register_datatype(cls) {
+    _datatypes[cls.tag] = cls;
+    return cls;
+}
+
 export default {
     _datatypes: _datatypes,
-    Date: DkDate,
-    DateTime: DateTime,
-    Duration: Duration
+    Date: _register_datatype(DkDate),
+    DateTime: _register_datatype(DateTime),
+    Duration: _register_datatype(Duration)
 };
