@@ -10,10 +10,16 @@ import {dkconsole} from "../../lifecycle/dkboot/dk-console";
 
 const _datatypes = {};
 
+function _register_datatype(cls) {
+    _datatypes[cls.tag] = cls;
+    return cls;
+}
 
 export class datatype extends Class {
+    static tag = 'datatype-subclass-has-no-tag';
     constructor() {
         super();
+        // this._tag = this.constructor.tag;
         this._value = undefined;
     }
     _has_my_tag(args) {
@@ -32,41 +38,40 @@ export class datatype extends Class {
     get value() { return this._value; }
     set value(v) {
         this._value = v;
-        return v;
     }
 }
 
 
-export function dkdatatype({tag}) {
-    return function decorator(cls) {
-        if (cls.kind !== 'class') throw `not class ${cls.kind}`;
-        Object.entries({tag}).forEach(([k, v]) => {
-            cls.elements.push({
-                kind: 'field',
-                key: k,
-                placement: 'static', 
-                descriptor: {
-                    configurable: false,
-                    enumerable: true,
-                    writable: false
-                },
-                initializer: () => v 
-            });
-        });
-        return {
-            kind: 'class',
-            elements: cls.elements,
-            finisher(cls) {
-                _datatypes[tag] = cls;
-            }
-        };
-    };
-}
+// export function dkdatatype({tag}) {
+//     return function decorator(cls) {
+//         if (cls.kind !== 'class') throw `not class ${cls.kind}`;
+//         Object.entries({tag}).forEach(([k, v]) => {
+//             cls.elements.push({
+//                 kind: 'field',
+//                 key: k,
+//                 placement: 'static', 
+//                 descriptor: {
+//                     configurable: false,
+//                     enumerable: true,
+//                     writable: false
+//                 },
+//                 initializer: () => v 
+//             });
+//         });
+//         return {
+//             kind: 'class',
+//             elements: cls.elements,
+//             finisher(cls) {
+//                 _datatypes[tag] = cls;
+//             }
+//         };
+//     };
+// }
 
 
 // @dkdatatype({tag: '@date:'})
 export class DkDate extends datatype {
-    tag = '@date:';
+    static tag = '@date:';
     days = ['søndag', 'mandag', 'tirsdag', 'onsdag', 'torsdag', 'fredag', 'lørdag'];
     
     constructor(...args) {
@@ -119,12 +124,12 @@ export class DkDate extends datatype {
         return this.tag + this.value.toISOString().slice(0, 10);
     }
 }
-// _datatypes[DkDate.tag] = DkDate;
+_register_datatype(DkDate);
 
 
 // @dkdatatype({tag: '@datetime:'})
 export class DateTime extends DkDate {
-    tag = '@datetime:';
+    static tag = '@datetime:';
     
     constructor(...args) {
         // '2014-03-11T08:18:07.543000'
@@ -178,12 +183,12 @@ export class DateTime extends DkDate {
         return this.tag + this.toString("Y-m-dTH:i:s") + "." + this.value.getMilliseconds();
     }
 }
-// _datatypes[DateTime.tag] = DkDate;
+_register_datatype(DateTime);
 
 
 // @dkdatatype({tag: '@duration:'})
 export class Duration extends datatype {
-    tag = '@duration:';
+    static tag = '@duration:';
     
     constructor(v) {
         super();
@@ -240,17 +245,14 @@ export class Duration extends datatype {
         return this.tag + this.value;
     }
 }
-// _datatypes[Duration.tag] = Duration;
+_register_datatype(Duration);
 
 
-function _register_datatype(cls) {
-    _datatypes[cls.tag] = cls;
-    return cls;
-}
+
 
 export default {
     _datatypes: _datatypes,
-    Date: _register_datatype(DkDate),
-    DateTime: _register_datatype(DateTime),
-    Duration: _register_datatype(Duration)
+    DkDate: DkDate,
+    DateTime: DateTime,
+    Duration: Duration
 };
