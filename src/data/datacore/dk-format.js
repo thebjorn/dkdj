@@ -67,6 +67,12 @@ export function no_datetime(val, secs=true) {
     return secs ? res : res.slice(0, -3);
 }
 
+export function no_money(v) {
+    const kr = Math.round(v / 100);
+    const ore = v % 100;
+    return `${kr} + ${ore}`;
+}
+
 export default {
     twodigits,
     value,

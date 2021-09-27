@@ -1,4 +1,4 @@
-import {_no_date, _no_datetime, bool, no_date, no_datetime, percent, sprintf, twodigits, value} from "../dk-format";
+import {_no_date, _no_datetime, bool, no_date, no_datetime, percent, sprintf, twodigits, value, no_money} from "../dk-format";
 import foo from "../dk-format";
 
 const dk = {f:sprintf};
@@ -94,3 +94,8 @@ test("test-no_datetime", () => {
     const val = {value: new Date(2019, 0, 23, 16, 1)};
     expect(no_datetime(val)).toEqual("23.01.2019 kl.16.01:00");
 });
+
+
+test("test-no_money", () => {
+    expect(no_money(0)).toBe("0 + 0 asd");
+})
