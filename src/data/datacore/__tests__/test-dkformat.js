@@ -1,4 +1,4 @@
-import {_no_date, _no_datetime, bool, no_date, no_datetime, percent, sprintf, twodigits, value} from "../dk-format";
+import {_no_date, _no_datetime, bool, no_date, no_datetime, percent, sprintf, twodigits, value, no_money, kronestring, orestring} from "../dk-format";
 import foo from "../dk-format";
 
 const dk = {f:sprintf};
@@ -93,4 +93,36 @@ test("test-no_datetime", () => {
     expect(no_datetime()).toBe("");
     const val = {value: new Date(2019, 0, 23, 16, 1)};
     expect(no_datetime(val)).toEqual("23.01.2019 kl.16.01:00");
+});
+
+test("test-kronestring", () => {
+    expect(kronestring(0)).toBe("0");
+    expect(kronestring(1)).toBe("1");
+    expect(kronestring(10)).toBe("10");
+    expect(kronestring(100)).toBe("100");
+    expect(kronestring(1000)).toBe("1 000");
+    expect(kronestring(10000)).toBe("10 000");
+    expect(kronestring(100000)).toBe("100 000");
+    expect(kronestring(1000000)).toBe("1 000 000");
+    expect(kronestring(-1)).toBe("-1");
+    expect(kronestring(-10)).toBe("-10");
+    expect(kronestring(-100)).toBe("-100");
+    expect(kronestring(-1000)).toBe("-1 000");
+    expect(kronestring(-10000)).toBe("-10 000");
+    expect(kronestring(-100000)).toBe("-100 000");
+    expect(kronestring(-1000000)).toBe("-1 000 000");
+});
+
+test("test-orestring", () => {
+    expect(orestring(0)).toBe("-");
+    expect(orestring(1)).toBe("01");
+    expect(orestring(10)).toBe("10");
+});
+
+
+test("test-no_money", () => {
+    expect(no_money(0)).toBe("0,-");
+    expect(no_money(1000)).toBe("10,-");
+    expect(no_money(10050)).toBe("100,50");
+    expect(no_money(1234567)).toBe("12 345,67");
 });
