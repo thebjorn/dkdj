@@ -1,9 +1,9 @@
 {
   "name": "@norsktest/dkdj",
-  "version": "3.0.38",
+  "version": "3.0.39",
   "description": "dk widgets and more..",
-  "module": "lib/index.js",
-  "main": "lib/dkdj.js",
+  "module": "lib/dk.js",
+  "main": "lib/dk.js",
   "publishConfig": {
     "@norsktest:registry": "https://gitlab.com/api/v4/projects/13965270/packages/npm/"
   },
