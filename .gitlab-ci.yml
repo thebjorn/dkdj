@@ -2,3 +2,17 @@
 include:
   - project: 'norsktest/dktools'
     file: '/ci-templates/dkbuild.yml'
+
+
+jsbuild:
+  stage: build
+  image: thebjorn/dknode2:latest
+  variables:
+    DKBUILD_TYPE: "PRODUCTION"
+  script:
+    - yarn
+    - npx webpack
+  # artifacts:
+  #   - ...
+  dependencies:
+    - "js:test"    
