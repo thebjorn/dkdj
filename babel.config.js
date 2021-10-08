@@ -6,7 +6,7 @@ module.exports = function (api) {
             "targets": {
             },
             "useBuiltIns": "entry",
-            "corejs": "2",
+            "corejs": "3",
             // "useBuiltIns": "usage"
         }],
         ["@babel/preset-flow"]
@@ -15,24 +15,24 @@ module.exports = function (api) {
     const plugins = [
         "@babel/plugin-transform-flow-strip-types",
         "@babel/plugin-transform-for-of",
-        ["@babel/plugin-proposal-decorators", {
-            "decoratorsBeforeExport": false,
-        }],
+        // ["@babel/plugin-proposal-decorators", {
+        //     "decoratorsBeforeExport": false,
+        // }],
         "@babel/plugin-proposal-class-properties",
 
     ];
-    if (!process.env.BABEL_SKIP_TRANSFORM_RUNTIME) {
-        plugins.push([
-            "@babel/plugin-transform-runtime",
-            {
-                "corejs": "2",
-                "helpers": true,
-                "regenerator": true,
-                "useESModules": false
-                // "useESModules": true
-            }
-        ]);
-    }
+    // if (!process.env.BABEL_SKIP_TRANSFORM_RUNTIME) {
+    //     plugins.push([
+    //         "@babel/plugin-transform-runtime",
+    //         {
+    //             "corejs": "3",
+    //             "helpers": true,
+    //             "regenerator": true,
+    //             "useESModules": false
+    //             // "useESModules": true
+    //         }
+    //     ]);
+    // }
 
     return {
         presets,

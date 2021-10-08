@@ -7,8 +7,47 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 // const FlowWebpackPlugin = require('flow-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
+const {StatsWriterPlugin} = require('webpack-stats-plugin');
+const Visualizer = require('webpack-visualizer-plugin2');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+
 
 const LIBRARY_NAME = 'dk';
+
+const plugins = [
+    new HtmlWebpackPlugin({
+        filename: path.resolve(__dirname, 'dkdj/templates/dkdj/include-scripts.html'),
+        inject: false,
+        minify: false,
+        template: path.resolve(__dirname, 'src/html-webpack-plugin-django-template.html')
+    }),
+    new MiniCssExtractPlugin({
+        // Options similar to the same options in webpackOptions.output
+        // both options are optional
+        filename: process.env.DKBUILD_TYPE === 'PRODUCTION' ? "[name].[contenthash].css" : "[name].css",
+        // filename: "[name].css",
+        chunkFilename: "[id].css"
+    }),
+    // new StatsWriterPlugin({
+    //     filename: path.join('../../../../build', 'stats', 'log.json'),
+    //     fields: null,
+    //     stats: { chunkModules: true },
+    // }),
+ 
+    // new Visualizer({
+    //     filename: path.join('../../../../build', 'stats', 'statistics.html'),
+    // }),
+    // new FlowWebpackPlugin({
+    //     verbose: true,
+    //     printFlowOutput: true,
+    //     reportingSeverity: 'warning'
+    // })
+];
+
+if (process.env.JSANALYZE === '1') {
+    plugins.push(new BundleAnalyzerPlugin());
+}
+
 
 const common_settings = {
     entry: {
@@ -80,29 +119,10 @@ const common_settings = {
             }
         ]
     },
-    plugins: [
-        new HtmlWebpackPlugin({
-            filename: path.resolve(__dirname, 'dkdj/templates/dkdj/include-scripts.html'),
-            inject: false,
-            minify: false,
-            template: path.resolve(__dirname, 'src/html-webpack-plugin-django-template.html')
-        }),
-        new MiniCssExtractPlugin({
-            // Options similar to the same options in webpackOptions.output
-            // both options are optional
-            filename: process.env.DKBUILD_TYPE === 'PRODUCTION' ? "[name].[contenthash].css" : "[name].css",
-            // filename: "[name].css",
-            chunkFilename: "[id].css"
-        })
-        // new FlowWebpackPlugin({
-        //     verbose: true,
-        //     printFlowOutput: true,
-        //     reportingSeverity: 'warning'
-        // })
-    ],
+    plugins,
     externals: {
         jquery: 'jQuery',
-        pusher: 'pusher',
+        "pusher-js": 'pusher',
     }
 };
 
@@ -169,6 +189,7 @@ const npm_settings = {
     plugins: [],
     externals: {
         jQuery: 'jquery',
+        pusher: 'pusher',
     }
 };
 
