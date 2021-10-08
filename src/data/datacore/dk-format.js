@@ -1,12 +1,9 @@
-
 import {sprintf} from "./sprintf";
 export {sprintf} from "./sprintf";
 
 
 export function twodigits(n) {
- 
-    
-    return (n < 10? '0': '') + n; 
+    return (n < 10 ? '0' : '') + n;
 }
 
 
@@ -59,12 +56,59 @@ export function _no_datetime(v) {
     );
 }
 
-export function no_datetime(val, secs=true) {
+export function no_datetime(val, secs = true) {
     if (!val) return "";
     const v = val.value;
     const res = _no_datetime(v);
     // return res.slice(0, -3);
     return secs ? res : res.slice(0, -3);
+}
+
+/**
+ * Return a string version of the integer value ``kr``, with
+   space as the thousand-separator.
+ * @param kr
+ * @returns {string}
+ */
+export function kronestring(kr) {
+    if (kr === 0) {
+        return '0';
+    }
+    let res = '';
+    let fortegn = '';
+    if (kr < 0) {
+        fortegn = '-';
+        kr = -kr;
+    } 
+    let tusen;
+    while (kr) {
+        tusen = kr % 1000;
+        kr = Math.floor(kr / 1000);
+        res = `${String(tusen).padStart(3, '0')} ${res}`;
+    }
+
+    return `${fortegn}${res.trim().replace(/^0+/, '')}`;
+}
+
+/**
+ * Return a string version of the integer ``øre`` value. Either a two-digit
+   string or a dash (as in 5,-).
+ * @param ore
+ * @returns {string|string}
+ */
+export function orestring(ore) {
+    return (ore === 0) ? '-': String(ore).padStart(2, '0');
+}
+
+/**
+ * Format val as Norwegian currency.
+ * @param v
+ * @returns {string}
+ */
+export function no_money(v) {
+    const kr = Math.floor(v / 100);
+    const ore = v % 100;
+    return `${kronestring(kr)},${orestring(ore)}`;
 }
 
 export default {
@@ -74,7 +118,8 @@ export default {
     bool,
     no_date,
     no_datetime,
-    
+    no_money,
+
     /*
      *  Convert val to string, based on its implied type.
      *  (keep as separate top level function so there aren't any proxy issues
@@ -83,5 +128,5 @@ export default {
     format_value: function (val, record, cell) {
         return value(val, record, cell);
     }
-    
+
 };

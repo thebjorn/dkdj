@@ -3,6 +3,7 @@ include:
   - project: 'norsktest/dktools'
     file: '/ci-templates/dkbuild.yml'
 
+
 jsbuild:
   stage: build
   image: thebjorn/dknode2:latest

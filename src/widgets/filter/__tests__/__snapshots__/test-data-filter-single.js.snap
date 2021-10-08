@@ -6,3 +6,10 @@ exports[`test-data-filter-single 1`] = `
         <label id=\\"filter_name-3-label\\" for=\\"filter_name-3\\"><input type=\\"radio\\" name=\\"filter_name\\" id=\\"filter_name-3\\" value=\\"3\\">3</label>
         </div></div></div></div></section>"
 `;
+
+exports[`test-data-filter-single-dictvals 1`] = `
+"<section id=\\"data-filter-2\\" class=\\"DataFilter\\"><header id=\\"dk-bx-8\\"><h2 id=\\"dk-bx-9\\" class=\\"title\\">Filter</h2></header><div id=\\"dk-bx-10\\" class=\\"content\\"><div id=\\"select-one-filter-def-2\\" class=\\"SelectOneFilterDef filterdef\\"><div id=\\"dk-bx-11\\" class=\\"filter-name filterbox\\"><header id=\\"dk-bx-12\\" class=\\"filterheader\\"><h3 id=\\"dk-bx-13\\" class=\\"filtertitle\\">Filter Label</h3></header><div id=\\"dk-bx-14\\" class=\\"filter content filtercontent RadioSelectWidget\\"><label id=\\"filter_name-4-label\\" for=\\"filter_name-4\\"><input type=\\"radio\\" name=\\"filter_name\\" id=\\"filter_name-4\\" value=\\"v1\\">1</label>
+        <label id=\\"filter_name-5-label\\" for=\\"filter_name-5\\"><input type=\\"radio\\" name=\\"filter_name\\" id=\\"filter_name-5\\" value=\\"v2\\">2</label>
+        <label id=\\"filter_name-6-label\\" for=\\"filter_name-6\\"><input type=\\"radio\\" name=\\"filter_name\\" id=\\"filter_name-6\\" value=\\"v3\\">3</label>
+        </div></div></div></div></section>"
+`;

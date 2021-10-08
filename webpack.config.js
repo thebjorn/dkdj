@@ -130,7 +130,7 @@ const prod_settings = merge(common_settings, {
 const npm_settings = {
     mode: 'production',
     entry: {
-        dkdj: './src/index.js',
+        dk: './src/index.js',
     },
     // devtool: 'source-map',
     target: 'node',
@@ -159,12 +159,8 @@ const npm_settings = {
                     // fallback to style-loader in development
                     // {loader: process.env.NODE_ENV !== 'production' ? 'style-loader' : MiniCssExtractPlugin.loader},
                     // {loader: process.env.NODE_ENV === 'production' ? 'style-loader' : MiniCssExtractPlugin.loader},
-                    // {loader: "css-loader", options: {sourceMap: true}},
-                    {loader: "postcss-loader", options: {
-                        plugins: [
-                            require('autoprefixer')
-                        ]
-                    }},
+                    {loader: "css-loader", options: {sourceMap: true}},
+                    {loader: "postcss-loader", options: {}},
                     {loader: "sass-loader", options: {sourceMap: true}},
                 ]
             }
