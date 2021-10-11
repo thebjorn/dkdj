@@ -7,4 +7,5 @@ test("pusher-datasource-xxx", async () => {
         pusher_channel: 'xxx',
         pusher_key: '...',
     });
+    expect(ds).toBeTruthy();
 });
