@@ -1,5 +1,6 @@
 import dk from "../dk-obj";
 import Class from "../lifecycle/coldboot/dk-class";
+import is from "../is";
 import widgetmap from "./dk-widgetmap";
 import page from "./dk-page";
 import {BaseWidget} from "./dk-base-widget";
@@ -54,10 +55,16 @@ export class UIWidget extends BaseWidget {
      *  Short hand for forwarding an event, e.g. a click event on this
      *  widget into a click notification from this widget.
      */
-    retrigger(evtname) {
+    retrigger(evtname, ...args) {
         const self = this;
         this.widget().on(evtname, function (event) {
-            self.trigger(evtname, self, event);
+            if (args.length === 1 && is.isFunction(args[0])) {
+                self.trigger(evtname, args[0]());
+            } else if (args.length > 0) {
+                self.trigger(evtname, ...args);
+            } else {
+                self.trigger(evtname, self, event);
+            }
         });
     }
 
@@ -431,12 +438,16 @@ export class UIWidget extends BaseWidget {
         // we _must_ generate an id for this widget, so that
         // this.widget() works.
         try {
-            const w = new this(attrs);
             // if (!location.jquery) location = dk.$(location);
-            const location = (typeof loc === 'string') ? dk.$(loc) : loc;
-            if (location.length === 0) throw `Location ${loc} not found in document.`;
-            page.create_widget(w, {on: location});
-            return w;
+            const locations = (typeof loc === 'string') ? dk.$(loc) : loc;
+            if (locations.length === 0) throw `Location ${loc} not found in document.`;
+            const widgets = [];
+            locations.each((n, location) => {
+                const w = new this(attrs);
+                page.create_widget(w, {on: dk.$(location)});
+                widgets.push(w);
+            });
+            return widgets.length === 1 ? widgets[0] : widgets;
         } catch (e) {
             dk.error(e);
         }
@@ -446,11 +457,14 @@ export class UIWidget extends BaseWidget {
         // we must not generate an id for this widget until we
         // get to the widget's construct() method.
         try {
-            const w = new this(attrs);
-            const location = (typeof loc === 'string') ? dk.$(loc) : loc;
-            if (location.length === 0) throw `Location ${loc} not found in document.`;
-            page.create_widget(w, {inside: location});
-            return w;
+            const locations = (typeof loc === 'string') ? dk.$(loc) : loc;
+            if (locations.length === 0) throw `Location ${loc} not found in document.`;
+            const widgets = [];
+            locations.each((n, location) => {
+                const w = new this(attrs);
+                page.create_widget(w, {inside: dk.$(location)});
+            });
+            return widgets.length === 1 ? widgets[0] : widgets;
         } catch (e) {
             dk.error(e);
         }
@@ -460,11 +474,14 @@ export class UIWidget extends BaseWidget {
         // we must not generate an id for this widget until we
         // get to the widget's construct() method.
         try {
-            const w = new this(attrs);
-            const location = (typeof loc === 'string') ? dk.$(loc) : loc;
-            if (location.length === 0) throw `Location ${loc} not found in document.`;
-            page.create_widget(w, {inside: location, append: true});
-            return w;
+            const locations = (typeof loc === 'string') ? dk.$(loc) : loc;
+            if (locations.length === 0) throw `Location ${loc} not found in document.`;
+            const widgets = [];
+            locations.each((n, location) => {
+                const w = new this(attrs);
+                page.create_widget(w, {inside: dk.$(location), append: true});
+            });
+            return widgets.length === 1 ? widgets[0] : widgets;
         } catch (e) {
             dk.error(e);
             // throw e;

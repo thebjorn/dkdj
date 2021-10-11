@@ -76,15 +76,18 @@ export function on(obj, signal, optfn) {
     if (obj === undefined) {
         throw new Error("Cannot listen on undefined object: " + obj);
     }
-    if (optfn !== undefined) {
-        _attach_listener(obj, signal, optfn);
-    } else {
-        return {
-            run: function (fn) {
-                _attach_listener(obj, signal, fn);
-            }
-        };
-    }
+    const items = Array.isArray(obj) ? obj : [obj]; 
+    items.forEach(item => {
+        if (optfn !== undefined) {
+            _attach_listener(item, signal, optfn);
+        } else {
+            return {
+                run: function (fn) {
+                    _attach_listener(item, signal, fn);
+                }
+            };
+        }
+    });
 }
 
 
@@ -95,17 +98,20 @@ export function trigger(obj, signal, ...args) {
         const argsval = (args.length === 1 && args[0] === obj) ? 'self' : args;
         // dkconsole.debug(`dk.trigger[signal=${signal}](${obj_str},${nl}ARGS=[${argsval}])`);
     }
-    if (obj[listeners]) {
-        if (obj[listeners][signal]) {
-            obj[listeners][signal].forEach(function (fn) {
-                if (fn.name) {
-                    dkconsole.debug(`    run: ${fn.name}(${args})`);
-                }
-                fn(...args);
-                // fn.apply(null, args);
-            });
+    const items = Array.isArray(obj) ? obj : [obj];
+    items.forEach(item => {
+        if (item[listeners]) {
+            if (item[listeners][signal]) {
+                item[listeners][signal].forEach(function (fn) {
+                    if (fn.name) {
+                        dkconsole.debug(`    run: ${fn.name}(${args})`);
+                    }
+                    fn(...args);
+                    // fn.apply(null, args);
+                });
+            }
         }
-    }
+    });
 }
 
 globalThis.$trigger = trigger;
