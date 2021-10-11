@@ -181,6 +181,7 @@ export class InputWidget extends Widget {   // XXX: should it be UIWidget or Dat
                 event: e,
                 item: this
             });
+            // console.log('input-widget-handlers-this.widget().on(change input blur', e);
             self.trigger('change', e, self);
         });
         this.retrigger('validation-change');

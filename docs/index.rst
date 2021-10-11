@@ -14,6 +14,7 @@ Welcome to dkdj's documentation!
 
     faq
 
+    tutorial/jquery-vs-dkdj-ajax
 
 ToDo list
 =========

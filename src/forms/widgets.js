@@ -58,6 +58,29 @@ export class TextInputWidget extends InputWidget {
 }
 
 
+export class IntInputWidget extends InputWidget {
+    constructor(...args) {
+        super({
+            template: {root: 'input'}
+        }, ...args);
+    }
+    construct() {
+        super.construct();
+        if (this.node.type !== 'number') this.node.type = 'number';
+    }
+    handlers() {
+        super.handlers();
+        this.retrigger('keyup');
+    }
+    parse(str) {
+        return parseInt(str, 10);
+    }
+    stringify(val) {
+        return val.toString();
+    }
+}
+
+
 export class DurationWidget extends InputWidget {
     constructor(...args) {
         super({

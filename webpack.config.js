@@ -122,7 +122,7 @@ const common_settings = {
     plugins,
     externals: {
         jquery: 'jQuery',
-        "pusher-js": 'pusher',
+        "pusher-js": 'Pusher',
     }
 };
 
@@ -130,7 +130,8 @@ const dev_settings = merge(common_settings, {
     mode: 'development',   // production, none
     //devtool: 'eval',        // generated code
     // devtool: 'eval-source-map',      // original source
-    devtool: 'eval-cheap-module-source-map',      // original source
+    //devtool: 'eval-cheap-module-source-map',      // original source
+    devtool: 'eval-source-map',
 
     output: {
         filename: '[name].min.js',
@@ -189,7 +190,7 @@ const npm_settings = {
     plugins: [],
     externals: {
         jQuery: 'jquery',
-        pusher: 'pusher',
+        "pusher-js": 'Pusher',
     }
 };
 

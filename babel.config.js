@@ -3,11 +3,9 @@ module.exports = function (api) {
     
     const presets = [
         ["@babel/preset-env", {
-            "targets": {
-            },
-            "useBuiltIns": "entry",
+            //"useBuiltIns": "entry",
             "corejs": "3",
-            // "useBuiltIns": "usage"
+            "useBuiltIns": "usage"
         }],
         ["@babel/preset-flow"]
     ];

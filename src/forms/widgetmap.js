@@ -7,6 +7,7 @@ import {
     RadioSelectWidget,
     SelectWidget,
     TextInputWidget,
+    IntInputWidget,
     TriboolWidget
 } from "./widgets";
 import {InputWidget} from "./input-widget";
@@ -20,6 +21,7 @@ export const wmap = {
     },
     InputWidget,
     TextInputWidget,
+    IntInputWidget,
     TextWidget: TextInputWidget,
     DurationWidget,
     RadioInputWidget,

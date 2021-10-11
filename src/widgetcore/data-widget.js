@@ -49,6 +49,7 @@ export class DataWidget extends UIWidget {
     data_changed(data, path, val, name, target) {
         // dkconsole.debug(`data-changed ${path} = ${val}, new data: ${JSON.stringify(data)}`);
         this.draw(data);
+        // console.log('data-widget..data-changed', path, val, name, target);
         this.trigger('change', data);
     }
 
