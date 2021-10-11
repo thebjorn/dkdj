@@ -8,54 +8,54 @@ test("DkDate.tag", () => {
 });
 
 
-test("decorator-test", () => {
+// test("decorator-test", () => {
 
 
-    function set_bar(cls) {
-        if (cls.kind !== 'class') throw `not class ${kind}`;
-        console.log("KIND:", cls.kind);
+//     function set_bar(cls) {
+//         if (cls.kind !== 'class') throw `not class ${kind}`;
+//         console.log("KIND:", cls.kind);
 
-        // cls.elements.push(...Object.entries(props));
-        cls.elements.push({
-            kind: 'field',
-            key: 'bar',
-            placement: 'static',
-            // placement: 'prototype',
-            // placement: 'own',
-            descriptor: {
-                configurable: true,
-                enumerable: true,
-                writable: true
-            },
-            initializer: () => 'bar'
-        });
-        console.log("ELEMENTS:", cls.elements);
-        // return cls;
-        return {
-            kind: 'class',
-            elements: cls.elements
-        };
-    }
-
-
-    @set_bar
-    class Foo {
-        value = 42;
-    }
-
-    console.log("Object.keys(Foo)", Object.keys(Foo));
-    console.log("Object.keys(Foo.prototype)", Object.keys(Foo.prototype));
-    console.log("Object.keys(new Foo())", Object.keys(new Foo()));
-
-    console.log("Foo.bar:", Foo.bar);
-    console.log("(new Foo).bar:", (new Foo).bar);
-
-    console.log("Foo.value:", Foo.value);
-    console.log("(new Foo).value):", (new Foo).value);
+//         // cls.elements.push(...Object.entries(props));
+//         cls.elements.push({
+//             kind: 'field',
+//             key: 'bar',
+//             placement: 'static',
+//             // placement: 'prototype',
+//             // placement: 'own',
+//             descriptor: {
+//                 configurable: true,
+//                 enumerable: true,
+//                 writable: true
+//             },
+//             initializer: () => 'bar'
+//         });
+//         console.log("ELEMENTS:", cls.elements);
+//         // return cls;
+//         return {
+//             kind: 'class',
+//             elements: cls.elements
+//         };
+//     }
 
 
-    expect(1).toBe(1);
-});
+//     @set_bar
+//     class Foo {
+//         value = 42;
+//     }
+
+//     console.log("Object.keys(Foo)", Object.keys(Foo));
+//     console.log("Object.keys(Foo.prototype)", Object.keys(Foo.prototype));
+//     console.log("Object.keys(new Foo())", Object.keys(new Foo()));
+
+//     console.log("Foo.bar:", Foo.bar);
+//     console.log("(new Foo).bar:", (new Foo).bar);
+
+//     console.log("Foo.value:", Foo.value);
+//     console.log("(new Foo).value):", (new Foo).value);
+
+
+//     expect(1).toBe(1);
+// });
 
 test("get-datatypes", () => {
     console.log(datatype);

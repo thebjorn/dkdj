@@ -172,16 +172,16 @@ test("non-dkclass-ctor", () => {
 });
 
 
-test("test-class-attrs", () => {
-    @classattrs({hello: 'world'})
-    class Person extends Class {
-        foo() { return 'bar'; }
-    }
+// test("test-class-attrs", () => {
+//     @classattrs({hello: 'world'})
+//     class Person extends Class {
+//         foo() { return 'bar'; }
+//     }
 
-    let p = new Person();
-    expect(p.hello).toBe(undefined);
-    expect(Person.hello).toBe('world');
-});
+//     let p = new Person();
+//     expect(p.hello).toBe(undefined);
+//     expect(Person.hello).toBe('world');
+// });
 
 
 test('obj.FN', () => {
