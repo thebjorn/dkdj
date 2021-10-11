@@ -515,11 +515,13 @@ class PusherModelGrid(ModelGrid):
     """A resultset that can get initial data from a model and have 
        fields/records updated by listening to a pusher-channel.
        
-       How to use::
-            Create a pusher-channel and set the app-id, key and secret in dkpw.
-            Identify what should cause the grid to update and add the following
-            code to the place that triggers that action.
-            Initialize a channel_client ::
+       **How to use**
+       
+       Create a pusher-channel and set the app-id, key and secret in dkpw.
+       Identify what should cause the grid to update and add the following
+       code to the place that triggers that action.
+       Initialize a channel_client::
+
                 import pusher
                 channels_client = pusher.Pusher(
                     app_id=dkpw.get('PUSHER_PROCTOR_APP_ID'),
@@ -529,48 +531,56 @@ class PusherModelGrid(ModelGrid):
                     ssl=True
                 )
                     
-            Trigger a message to be sent on the channel::
+       Trigger a message to be sent on the channel::
+
                 channels_client.trigger(<<name_of_the_channel>>, '<<message_name>>', {
                     << json_data >>,
                 })
             
-            message_names that are supported::
-                change::
-                    Change specified fields on a given record (by pk).
-                    example json::
-                        {
-                            'id': 233332
-                            'fields': [{
-                                'fieldname': 'status',
-                                'value': 'logged-in'
-                            },
-                            {
-                                'fieldname': 'change_datetime',
-                                 'value': '2021-06-20 10:22:00'
-                            }]
-                        }
-                new::
-                    A new record is added and should be fetch from the db and
-                    put into the grid at the correct location according to the
-                    given sort.
-                    example json::
-                        {
-                            'id': 233331
-                        } 
-                delete::
-                    Remove a row from the grid.
-                    example json::
-                        {
-                            'id': 233331
-                        }
-                reload::
-                    Reload the whole datasource.
-                    example json::
-                        {}
-                reload_record ->
-                    Reload only the record that matches the id.
-                    example json::
-                        {
-                            'id': 233331
-                        } 
+       **message_names that are supported**
+       
+       **change:** Change specified fields on a given record (by pk).
+       
+       example json::
+
+                {
+                    'id': 233332
+                    'fields': [{
+                        'fieldname': 'status',
+                        'value': 'logged-in'
+                    },
+                    {
+                        'fieldname': 'change_datetime',
+                            'value': '2021-06-20 10:22:00'
+                    }]
+                }
+                
+       **new:** A new record is added and should be fetch from the db and
+       put into the grid at the correct location according to the
+       given sort.
+       example json::
+
+                {
+                    'id': 233331
+                } 
+
+       **delete:** Remove a row from the grid.
+       example json::
+
+                {
+                    'id': 233331
+                }
+
+       **reload:** Reload the whole datasource.
+       example json::
+
+                {}
+       
+       reload_record -> Reload only the record that matches the id.
+       example json::
+
+                {
+                    'id': 233331
+                } 
+
     """

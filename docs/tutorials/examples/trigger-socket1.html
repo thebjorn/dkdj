@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://static.datakortet.no/font/fa470/css/font-awesome.css">
+    <script crossorigin="anonymous"
+            src="https://polyfill.io/v3/polyfill.js?features=fetch,es5,es6,es7,Object.entries,Object.fromEntries,Element.prototype.append,DocumentFragment.prototype.append,DocumentFragment.prototype.prepend&flags=gated"></script>
+    <script crossorigin="anonymous"
+            src="https://unpkg.com/@webcomponents/webcomponentsjs@2.2.6/webcomponents-bundle.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-migrate-3.0.1.min.js"
+            integrity="sha256-F0O1TmEa4I8N24nY0bya59eP6svWcshqX1uzwaWC4F4=" crossorigin="anonymous"></script>
+    <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
+    <!-- script DEBUG LOGLEVEL="3" src="https://static.datakortet.no/dkdj/js/dkdj.8e5d6407c552ba86bace.min.js"></script -->
+    <script DEBUG="4" LOGLEVEL="4" src="http://localhost:8080/js/dkdj.min.js"></script>
+
+
+</head>
+<body>
+    <div id="example-trigger-socket1">
+        <div id="light2">
+            <div class="circle"
+                 style="border-radius:50%;width:100px;height:100px;background-color:yellow;">
+            </div>
+        </div>
+
+        <button class="color-button" id="red"></button>
+        <button class="color-button" id="yellow"></button>
+        <button class="color-button" id="green"></button>
+    </div>
+    <script type="text/javascript">
+
+        class LightWidget extends dk.Widget {
+            set_color(color) {
+                console.log('setting color:', color);
+                this.widget('.circle').css('background-color', color);
+            }
+        }
+
+        const light2 = LightWidget.create_on('#example-trigger-socket1 #light2');
+
+        class ButtonWidget extends dk.Widget {
+            construct() {
+                this.color = this.id;
+                this.widget().text(this.id);
+            }
+
+            handlers() {
+                this.retrigger('click', () => this.color);
+                // const self = this;
+                // this.widget().on('click', function () {
+                //     console.log(`self.trigger(${self.color})`);
+                //     self.trigger('click', self.color);
+                // });
+            }
+        }
+
+        const buttons = ButtonWidget.create_on('#example-trigger-socket1 .color-button');
+        dk.on(buttons, 'click', c => light2.set_color(c));
+
+    </script>
+</body>
+</html>

@@ -11,7 +11,14 @@ Tutorial
         margin: 1ex;
     }
     </style>
-
+    <link rel="stylesheet" href="https://static.datakortet.no/font/fa470/css/font-awesome.css">
+    <script crossorigin="anonymous" src="https://polyfill.io/v3/polyfill.js?features=fetch,es5,es6,es7,Object.entries,Object.fromEntries,Element.prototype.append,DocumentFragment.prototype.append,DocumentFragment.prototype.prepend&flags=gated"></script>
+    <script crossorigin="anonymous" src="https://unpkg.com/@webcomponents/webcomponentsjs@2.2.6/webcomponents-bundle.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-migrate-3.0.1.min.js" integrity="sha256-F0O1TmEa4I8N24nY0bya59eP6svWcshqX1uzwaWC4F4=" crossorigin="anonymous"></script>
+    <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
+    <!-- script DEBUG LOGLEVEL="3" src="https://static.datakortet.no/dkdj/js/dkdj.8e5d6407c552ba86bace.min.js"></script -->
+    <script DEBUG LOGLEVEL="3" src="http://localhost:8080/js/dkdj.min.js"></script>
 
 
 Hello World
@@ -94,33 +101,6 @@ will need to create a dk.Widget subclass:
         });
     </script>
 
-dkjs version::
-
-    <script type="text/javascript">
-        var HelloWidget = dk.Widget.extend({
-            type: 'HelloWidget',
-            refresh: function () {
-                return this.widget().attr('data-name');
-            },
-            draw: function (data) {
-                this.widget().text('Hello: ' + data);
-            }
-        });
-
-        $(document).ready(function () {
-            $('.mywidgets > div').dkWidget(HelloWidget);
-        });
-    </script>
-
-    <div class="mywidgets">
-      <div data-name="Alexander"></div>
-      <div data-name="Julius"></div>
-    </div>
-
-
-.. note:: Note that ``dk.Widget`` subclasses no longer needs to have a :js:attr:`type` field!
-
-
 Here I've used
 
 - ``data-name="..."`` attributes on the div elements to provide data to the
@@ -190,16 +170,6 @@ argument.
 Widget methods (actions)
 ------------------------------------------------------
 
-All widgets that you add to the page are available as ``$$.*widget_name*``
-namespace, i.e. you don't need to manage references to the widgets -- just place them
-on the page.
-
-.. note:: **widget.name** vs. **widget.id**
-
-    The ``widget.name`` is the same as the ``widget.id`` with any dashes (``-``)
-    converted to underlines, e.g. "light-switch" -> "light_switch". (Dashes are
-    the standard 'word' delimiter in html and css).
-
 Since widgets are regular objects, we can add methods that perform actions on
 the widget.  E.g. we can implement a set_color method
 
@@ -212,7 +182,7 @@ the widget.  E.g. we can implement a set_color method
             </div>
 
             <script type="text/javascript">
-                dk.Widget.create({
+                const light = dk.Widget.create({
                     set_color: function (color) {
                         this.widget('.circle').css('background-color', color);
                     }
@@ -220,9 +190,9 @@ the widget.  E.g. we can implement a set_color method
             </script>
         </div>
 
-        <button onclick="$$.light1.set_color('red');">red</button>
-        <button onclick="$$.light1.set_color('yellow');">yellow</button>
-        <button onclick="$$.light1.set_color('green');">green</button>
+        <button onclick="light.set_color('red');">red</button>
+        <button onclick="light.set_color('yellow');">yellow</button>
+        <button onclick="light.set_color('green');">green</button>
 
         .. examples/simple/socket1-lightcolor.html
 
@@ -237,7 +207,7 @@ and the result is (this documentation should be interactive if you're watching i
             </div>
 
             <script type="text/javascript">
-                dk.Widget.create({
+                const light = dk.Widget.create({
                     set_color: function (color) {
                         this.widget('.circle').css('background-color', color);
                     }
@@ -245,9 +215,9 @@ and the result is (this documentation should be interactive if you're watching i
             </script>
         </div>
 
-        <button onclick="$$.light1.set_color('red');">red</button>
-        <button onclick="$$.light1.set_color('yellow');">yellow</button>
-        <button onclick="$$.light1.set_color('green');">green</button>
+        <button onclick="light.set_color('red');">red</button>
+        <button onclick="light.set_color('yellow');">yellow</button>
+        <button onclick="light.set_color('green');">green</button>
     </div>
 
 .. note::  widgets should know about their own state..
@@ -324,397 +294,418 @@ widgets on the page.
 
 .. code-block:: html
 
+    <div id="light2">
+        <div class="circle"
+             style="border-radius:50%;width:100px;height:100px;background-color:yellow;">
+        </div>
+    </div>
+
+    <button class="color-button" id="red"></button>
+    <button class="color-button" id="yellow"></button>
+    <button class="color-button" id="green"></button>
+
     <script type="text/javascript">
-        dk.Widget.extend({
-            type: 'LightWidget',
-            set_color: function (color) {
+
+        class LightWidget extends dk.Widget {
+            set_color(color) {
                 this.widget('.circle').css('background-color', color);
             }
-        });
+        }
 
-        dk.Widget.extend({
-            type: 'ButtonWidget',
-            draw: function () {
-                this.widget().text(this.id);
-            },
-            handlers: function () {
-                var self = this;
-                this.widget().click(function () {
-                    self.notify('click', self);
-                });
+        class ButtonWidget extends dk.Widget {
+            construct() {
+                this.color = this.id;             // this.id is red/green/yellow
+                this.widget().text(this.color);
             }
-        });
-
-        $bind('click@red -> set_color@light1');
-        $bind('click@yellow → set_color@light1');
-        $bind('click@green → set_color@light1');
+            handlers() {
+                this.retrigger('click', () => this.color);
+            }
+        }
+        
+        const light2 = LightWidget.create_on('#light2');
+        const buttons = ButtonWidget.create_on('.color-button');
+        dk.on(buttons, 'click', c => light2.set_color(c));
 
     </script>
 
-    <body>
-        <div id="light1" dkwidget="LightWidget" class="light">
-            <div class="circle"
-                 style="border-radius:50%;width:100px;height:100px;background-color:yellow;">
-            </div>
+.. examples/trigger-socket1.html
+
+.. raw:: html
+
+    <div id="light2">
+        <div class="circle"
+             style="border-radius:50%;width:100px;height:100px;background-color:yellow;">
         </div>
+    </div>
 
-        <button id="red"    dkwidget="ButtonWidget"></button>
-        <button id="yellow" dkwidget="ButtonWidget"></button>
-        <button id="green"  dkwidget="ButtonWidget"></button>
-    </body>
+    <button class="color-button" id="red"></button>
+    <button class="color-button" id="yellow"></button>
+    <button class="color-button" id="green"></button>
 
-    .. examples/simple/trigger-socket1.html
+    <script type="text/javascript">
 
-.. note::  **$bind**
+        class LightWidget extends dk.Widget {
+            set_color(color) {
+                console.log('setting color:', color);
+                this.widget('.circle').css('background-color', color);
+            }
+        }
+        const light2 = LightWidget.create_on('#light2');
 
-    The ``$bind`` function is added to the global scope for convenience
-    (it is shorthand for the class method ``dk.Widget.bind(..)``).
-    You can use either ascii arrows (``->``)
-    or unicode arrows (→).
+        class ButtonWidget extends dk.Widget {
+            construct() {
+                this.color = this.id;
+                this.widget().text(this.color);
+            }
+            handlers() {
+                this.retrigger('click', () => this.color);
+
+                // const self = this;
+                // this.widget().on('click', function () {
+                //     console.log(`self.trigger(${self.color})`);
+                //     self.trigger('click', self.color);
+                // });
+            }
+        }
+        
+        const buttons = ButtonWidget.create_on('.color-button');
+        dk.on(buttons, 'click', c => light2.set_color(c));
+    </script>
+
 
 In the button widgets ``handlers()`` method, we set up the click handler as
 before, but the action is now to only send a notification that a "click"
-message/event has happened, and send itself (a ButtonWidget instance)
-along as an argument.  We know that the method (action) we've intended
-to bind to requires a color name as an argument, and the id of the button
-elements are (conveniently) valid color names... you could argue that this
-violates the "no tight binding" rule, and you'd be right.  Let's fix it
-by passing the button widget itself as an argument::
-
-    self.notify("click", self);
-
-and specifying a connector function during the bind::
-
-    $bind('click@red → set_color@light1', btn => btn.id);
-
-The ``btn => btn.id`` is *ES Harmony* syntax, and currently only works in Firefox.
-The conventional way would be::
-
-    $bind('click@red → set_color@light1', function (btn) { return btn.id; });
-
-By using a connector function, neither the button widget, nor the light widget, need
-to know anything about each others arguments -- and the widgets can be freely mixed
-and matched on any page.
+message/event has happened, and send the button color
+along as an argument.
 
 .. note::  **event forwarding shortcut**
 
-   The above handler pattern, ``this.widget().click(function () { self.notify('click', self); })``,
-   is so common that it has a shortcut. The handlers
-   method can also be written as::
+   Notice the ``this.retrigger(evt, fn)`` shortcut above, it listens for a
+   dom/jquery event (evt) and triggers a dkdj event by the same name with
+   the result of running the function (fn) as the payload::
 
-       handlers: function () {
-           this.notify_on('click');
+       handlers() {
+           this.retrigger('click', () => this.color);
        }
 
+   it is equivalent to::
+
+       const self = this;
+       this.widget().on('click', function () {
+           self.trigger('click', self.color);
+       });  
 
 
-Widget creation steps
-------------------------------------------------------
-Widgets can either be created from existing html on the page, that is "widgetized" (with
-widgetitude); or it can be constructed from scratch and placed inside an empty ``<div>``
-container. The creation process proceeds through 3 stages
 
-1. find where the widget should be placed
-2. create the structure of the widget
-3. draw the data of the widget
+.. old docs below (don't pay any attention ;-)
 
-.. graphviz::
+    Widget creation steps
+    ------------------------------------------------------
+    Widgets can either be created from existing html on the page, that is "widgetized" (with
+    widgetitude); or it can be constructed from scratch and placed inside an empty ``<div>``
+    container. The creation process proceeds through 3 stages
 
-    digraph foo {
-        node [shape=box];
+    1. find where the widget should be placed
+    2. create the structure of the widget
+    3. draw the data of the widget
 
-        subgraph cluster_1 {
-            create -> init;
+    .. graphviz::
 
-            create [label="dk.Widget.create(location, {..})\npass an optional location,\nand properties."];
-            init [label="create calls widget.init() as part\nof the regular dk.Class machinery \n(this is where the id and name are determined)"];
+        digraph foo {
+            node [shape=box];
 
-            init -> page_add;
-            page_add [label="dk.page.add(widget) adds the widget to the page\nmaking it available as $$.widgetname\nand calls initialize"];
+            subgraph cluster_1 {
+                create -> init;
 
-            label = "find widget placement";
-            color = lightgrey;
-        }
+                create [label="dk.Widget.create(location, {..})\npass an optional location,\nand properties."];
+                init [label="create calls widget.init() as part\nof the regular dk.Class machinery \n(this is where the id and name are determined)"];
 
-        subgraph cluster_2 {
-            initialize [label="widget.initialize()"];
-            initialize -> { parse_html; construct; };
+                init -> page_add;
+                page_add [label="dk.page.add(widget) adds the widget to the page\nmaking it available as $$.widgetname\nand calls initialize"];
 
-            color = lightgrey;
-            label = "create widget structure";
-        }
-
-        subgraph cluster_3 {
-            url -> { hasurl; refresh; draw };
-
-            color = lightgrey;
-            label = "draw widget data";
-        }
-        page_add -> initialize;
-        construct -> url;
-        parse_html -> url;
-
-
-        parse_html [label="widget.parse_html() is called if the new \nwidget already contains any DOM elements"];
-        construct [label="widget.construct_widget() is called if the target \nis empty and should construct the widgets elements\nand add them to the DOM"];
-
-        url [label="widget.render_data() renders the data of the widget"];
-
-        hasurl [label="if the widget has a .url attribute,\n call widget.refresh()\nwhich will call draw() internally"];
-        refresh [label="if it doesn't have .url, \nbut does have a .refresh() method\ncall widget.draw(widget.refresh())"];
-        draw [label="widget.draw(null)"];
-    }
-
-
-Creating the structure
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-You should override both ``parse_html()`` to progressively enhance existing markup, and ``create_widget()``
-to assemble the widget programatically. You can always override ``initialize(location)`` if you want to
-handle this yourself.
-
-
-The widget is created when ``dk.page`` places it on the page and
-calls the ``dk.Widget.initialize()`` method.
-
-.. note:: **initialize()** vs **draw()**
-
-   initialize(), and parse_html()/create_widget(), are for creating the initial widget structure, while
-   draw() is for "filling-in" the widget with data.
-
-
-Narrowing
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Let's look at how we can construct our ButtonWidget. A first attempt might look like::
-
-    var ButtonWidget = dk.Widget.extend({
-        type: 'ButtonWidget',
-        ...
-        construct_widget: function () {
-            this.widget().append('<button/>');
-        },
-        handlers: function () {
-            this.notify_on('click');
-        }
-    });
-
-the problem here is that the handlers will act on the box that the ``<button/>`` element is placed inside, and not
-the button. The fix is simple::
-
-    construct_widget: function () {
-        this.narrow('<button/>');
-    }
-
-which is similar to doing
-
-.. code-block:: guess
-
-    construct_widget: function () {
-        item = $('<button/>);
-        var new_id = ButtonWidget.next_widget_id();  // get a fresh id
-        item.prop('id', new_id);                     // attach it to the button
-        this.widget().append(item);                  // append the button as before
-        this.set_widget_id(new_id);                  // and then reset the widget id to the button
-    }
-
-we're "narrowing" the scope of the widget, hence the name of the method.
-
-The item that you pass into ``narrow()`` can be text of a jQuery object (or indeed anything else that has
-an id).
-
-
-..
-    The default implementation looks like this::
-
-        initialize: function (location) {
-            if (this.widget()[0].innerHTML) {
-                // there is existing html inside the widget..
-                this.parse_html();
-            } else {
-                // we need to create the widget from scratch..
-                this.construct_widget(location);
+                label = "find widget placement";
+                color = lightgrey;
             }
+
+            subgraph cluster_2 {
+                initialize [label="widget.initialize()"];
+                initialize -> { parse_html; construct; };
+
+                color = lightgrey;
+                label = "create widget structure";
+            }
+
+            subgraph cluster_3 {
+                url -> { hasurl; refresh; draw };
+
+                color = lightgrey;
+                label = "draw widget data";
+            }
+            page_add -> initialize;
+            construct -> url;
+            parse_html -> url;
+
+
+            parse_html [label="widget.parse_html() is called if the new \nwidget already contains any DOM elements"];
+            construct [label="widget.construct_widget() is called if the target \nis empty and should construct the widgets elements\nand add them to the DOM"];
+
+            url [label="widget.render_data() renders the data of the widget"];
+
+            hasurl [label="if the widget has a .url attribute,\n call widget.refresh()\nwhich will call draw() internally"];
+            refresh [label="if it doesn't have .url, \nbut does have a .refresh() method\ncall widget.draw(widget.refresh())"];
+            draw [label="widget.draw(null)"];
         }
 
-    which means you have a couple of options:
 
-    1. override ``initialize()`` and handle it yourself. This makes sense if
-       you're creating ad-hoc/in-page widgets where you have full control over
-       the context in which the widgets are created.
-    2. override either one or both of ``widgetize_html()`` and ``construct_widget()``.
-
-
+    Creating the structure
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    You should override both ``parse_html()`` to progressively enhance existing markup, and ``create_widget()``
+    to assemble the widget programatically. You can always override ``initialize(location)`` if you want to
+    handle this yourself.
 
 
-Layout
-------------------------------------------------------
-``dk.Layout`` is a lightweight class to create named layoutboxes::
+    The widget is created when ``dk.page`` places it on the page and
+    calls the ``dk.Widget.initialize()`` method.
 
-    var StackLayout = dk.Layout.extend({
-        init: function (location) {
-            this._super(location);   // important!
-            this.top = this.append('top');
-            this.bottom = this.append('bottom');
-    });
+    .. note:: **initialize()** vs **draw()**
 
-if you have an element
-
-.. code-block:: html
-
-    <div id="foo"></div>
-
-and apply the ``StackLayout``::
-
-    var stklayout = StackLayout.create($('#foo'));
-
-the resulting DOM would look like
-
-.. code-block:: html
-
-    <div id="foo">
-        <div id="dk-layout-box-3" class="dk-layout" name="top"></div>
-        <div id="dk-layout-box-4" class="dk-layout" name="bottom"></div>
-    </div>
-
-where the ``id``'s are unique for the page, and::
-
-    stklaoyout.top === $('dk-layout-box-3')
-    stklaoyout.bottom === $('dk-layout-box-4')
-
-You would normally attach css to ``.top`` and ``.bottom`` to get the visual layout that you're after.
-
-..
-    position, vStack, ...
+    initialize(), and parse_html()/create_widget(), are for creating the initial widget structure, while
+    draw() is for "filling-in" the widget with data.
 
 
+    Narrowing
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    Let's look at how we can construct our ButtonWidget. A first attempt might look like::
 
-Subwidgets
-------------------------------------------------------
-Creating subwidgets starts with creating a layout, and then creating widgets into the layout::
+        var ButtonWidget = dk.Widget.extend({
+            type: 'ButtonWidget',
+            ...
+            construct_widget: function () {
+                this.widget().append('<button/>');
+            },
+            handlers: function () {
+                this.notify_on('click');
+            }
+        });
 
-    construct_widget: function (location) {
-        this.layout = StackLayout.create(this.widget());
-        this.light = LightWidget.create(this.layout.top, {color: 'yellow'});
-        this.btn = ButtonWidget.create(this.layout.bottom, {...});
-        $bind('click@', this.btn, 'set_color@', this.light);
-    }
+    the problem here is that the handlers will act on the box that the ``<button/>`` element is placed inside, and not
+    the button. The fix is simple::
 
-the last line binds events and notifications between the subwidgets, in this case "when a *click*
-happens at *this.btn*, then send *set_color* to *this.light*.
-
-
-Ajax
-------------------------------------------------------
-For this example we'll use the ajax service at::
-
-    http://cache.norsktest.no/ajax/poststed/<%= zipcode %>/
-
-where `zipcode` is a valid Norwegian zip code, and the result is the associated
-`city`, as a json string.  This ajax service has been set up to reply with
-the required `Access-Control-Allow-*` headers
-(cf. https://gist.github.com/barrabinfc/426829 for details).
-
-For our html we'll have a text input to enter the zip, and a span to output
-the city:
-
-.. code-block:: html
-
-    <div dkwidget="poststed-widget">
-        <input type="text" name="postnr">
-        <span class="poststed"></span>
-    </div>
-
-the widget::
-
-    var PostStedWidget = dk.Widget.extend({
-        type: 'poststed-widget',
-        zipcode: null,
-        url: 'http://cache.norsktest.no/ajax/poststed/<%= zipcode %>/',
-
-        urldata: {
-            zipcode: function () { return this.zipcode || undefined; }
-        },
-
-        parse_html: function () {
-            this.postnr = this.widget('> [name=postnr]');
-            this.poststed = this.widget('> .poststed');
-            this.zipcode = this.postnr.val();
-        },
-
-        draw: function (poststed) {
-            this.poststed.text(poststed || '');
-        },
-
-        handlers: function () {
-            var self = this;
-
-            self.postnr.blur(function () {
-                self.zipcode = self.postnr.val();
-                self.refresh();
-            });
-
+        construct_widget: function () {
+            this.narrow('<button/>');
         }
-    });
 
-if your url has placeholders (i.e. ``<%= zipcode %>``), they are looked up in the widget's attributes.
+    which is similar to doing
 
-.. note:: **urldata**
+    .. code-block:: guess
 
-    If the widget has an url with template paramters, it should also contain an **urldata**
-    member that is a mapping from url parameters to their values. The values can be constants,
-    or getter functions as in the example above. The **urldata** member can also be a function
-    returning a hash of template parameters (for when you need ultimate flexibility).
+        construct_widget: function () {
+            item = $('<button/>);
+            var new_id = ButtonWidget.next_widget_id();  // get a fresh id
+            item.prop('id', new_id);                     // attach it to the button
+            this.widget().append(item);                  // append the button as before
+            this.set_widget_id(new_id);                  // and then reset the widget id to the button
+        }
 
-    If any of the url parameters are *undefined*, then the ajax call is aborted.
+    we're "narrowing" the scope of the widget, hence the name of the method.
 
-
-
-
-Design mode
-------------------------------------------------------
-You can put the page, and its widgets into design mode, which currently implies:
-
- - The widgets are replaced by boxes indicating
-    * the widget name
-    * the widget's triggers
-    * and the widgets sockets
- - an information area at the bottom of the page, listing all bindings that are in effect
- - if you hover over a trigger, all targets will be highlighted.
-
-For this to work you need to declare which triggers a widget has::
-
-    var button_widget = dk.widget.new_widget({
-        name: 'button-widget',
-        triggers: ['click'],
+    The item that you pass into ``narrow()`` can be text of a jQuery object (or indeed anything else that has
+    an id).
 
 
-Temp storage
-========================================================================
+    ..
+        The default implementation looks like this::
 
-old version...
-
-.. code-block:: guess
-
-        <script type="text/javascript">
-            dk.Widget.extend({
-                type: 'Button1',
-                handlers: function () {
-                    var self = this;
-                    return [
-                        {on: 'click', do: function () {
-                            console.log("click", self.id);
-                            self.notify("click");
-                        }}
-                    ];
+            initialize: function (location) {
+                if (this.widget()[0].innerHTML) {
+                    // there is existing html inside the widget..
+                    this.parse_html();
+                } else {
+                    // we need to create the widget from scratch..
+                    this.construct_widget(location);
                 }
-            });
-        </script>
+            }
 
-    <button dkwidget="Button1" id="red">red</button>
-    <button dkwidget="Button1" id="yellow">yellow</button>
-    <button dkwidget="Button1" id="green">green</button>
+        which means you have a couple of options:
 
-.. note::
+        1. override ``initialize()`` and handle it yourself. This makes sense if
+        you're creating ad-hoc/in-page widgets where you have full control over
+        the context in which the widgets are created.
+        2. override either one or both of ``widgetize_html()`` and ``construct_widget()``.
 
-   **dkwidget="WidgetType"** I'm instantiating the widgets by adding a
-   ``dkwidget="Button1"`` argument to the button html. This will be noticed on
-   *document.ready* and the widgets will be automatically instantiated.
+
+
+
+    Layout
+    ------------------------------------------------------
+    ``dk.Layout`` is a lightweight class to create named layoutboxes::
+
+        var StackLayout = dk.Layout.extend({
+            init: function (location) {
+                this._super(location);   // important!
+                this.top = this.append('top');
+                this.bottom = this.append('bottom');
+        });
+
+    if you have an element
+
+    .. code-block:: html
+
+        <div id="foo"></div>
+
+    and apply the ``StackLayout``::
+
+        var stklayout = StackLayout.create($('#foo'));
+
+    the resulting DOM would look like
+
+    .. code-block:: html
+
+        <div id="foo">
+            <div id="dk-layout-box-3" class="dk-layout" name="top"></div>
+            <div id="dk-layout-box-4" class="dk-layout" name="bottom"></div>
+        </div>
+
+    where the ``id``'s are unique for the page, and::
+
+        stklaoyout.top === $('dk-layout-box-3')
+        stklaoyout.bottom === $('dk-layout-box-4')
+
+    You would normally attach css to ``.top`` and ``.bottom`` to get the visual layout that you're after.
+
+    ..
+        position, vStack, ...
+
+
+
+    Subwidgets
+    ------------------------------------------------------
+    Creating subwidgets starts with creating a layout, and then creating widgets into the layout::
+
+        construct_widget: function (location) {
+            this.layout = StackLayout.create(this.widget());
+            this.light = LightWidget.create(this.layout.top, {color: 'yellow'});
+            this.btn = ButtonWidget.create(this.layout.bottom, {...});
+            $bind('click@', this.btn, 'set_color@', this.light);
+        }
+
+    the last line binds events and notifications between the subwidgets, in this case "when a *click*
+    happens at *this.btn*, then send *set_color* to *this.light*.
+
+
+    Ajax
+    ------------------------------------------------------
+    For this example we'll use the ajax service at::
+
+        http://cache.norsktest.no/ajax/poststed/<%= zipcode %>/
+
+    where `zipcode` is a valid Norwegian zip code, and the result is the associated
+    `city`, as a json string.  This ajax service has been set up to reply with
+    the required `Access-Control-Allow-*` headers
+    (cf. https://gist.github.com/barrabinfc/426829 for details).
+
+    For our html we'll have a text input to enter the zip, and a span to output
+    the city:
+
+    .. code-block:: html
+
+        <div dkwidget="poststed-widget">
+            <input type="text" name="postnr">
+            <span class="poststed"></span>
+        </div>
+
+    the widget::
+
+        var PostStedWidget = dk.Widget.extend({
+            type: 'poststed-widget',
+            zipcode: null,
+            url: 'http://cache.norsktest.no/ajax/poststed/<%= zipcode %>/',
+
+            urldata: {
+                zipcode: function () { return this.zipcode || undefined; }
+            },
+
+            parse_html: function () {
+                this.postnr = this.widget('> [name=postnr]');
+                this.poststed = this.widget('> .poststed');
+                this.zipcode = this.postnr.val();
+            },
+
+            draw: function (poststed) {
+                this.poststed.text(poststed || '');
+            },
+
+            handlers: function () {
+                var self = this;
+
+                self.postnr.blur(function () {
+                    self.zipcode = self.postnr.val();
+                    self.refresh();
+                });
+
+            }
+        });
+
+    if your url has placeholders (i.e. ``<%= zipcode %>``), they are looked up in the widget's attributes.
+
+    .. note:: **urldata**
+
+        If the widget has an url with template paramters, it should also contain an **urldata**
+        member that is a mapping from url parameters to their values. The values can be constants,
+        or getter functions as in the example above. The **urldata** member can also be a function
+        returning a hash of template parameters (for when you need ultimate flexibility).
+
+        If any of the url parameters are *undefined*, then the ajax call is aborted.
+
+
+
+
+    Design mode
+    ------------------------------------------------------
+    You can put the page, and its widgets into design mode, which currently implies:
+
+    - The widgets are replaced by boxes indicating
+        * the widget name
+        * the widget's triggers
+        * and the widgets sockets
+    - an information area at the bottom of the page, listing all bindings that are in effect
+    - if you hover over a trigger, all targets will be highlighted.
+
+    For this to work you need to declare which triggers a widget has::
+
+        var button_widget = dk.widget.new_widget({
+            name: 'button-widget',
+            triggers: ['click'],
+
+
+    Temp storage
+    ========================================================================
+
+    old version...
+
+    .. code-block:: guess
+
+            <script type="text/javascript">
+                dk.Widget.extend({
+                    type: 'Button1',
+                    handlers: function () {
+                        var self = this;
+                        return [
+                            {on: 'click', do: function () {
+                                console.log("click", self.id);
+                                self.notify("click");
+                            }}
+                        ];
+                    }
+                });
+            </script>
+
+        <button dkwidget="Button1" id="red">red</button>
+        <button dkwidget="Button1" id="yellow">yellow</button>
+        <button dkwidget="Button1" id="green">green</button>
+
+    .. note::
+
+    **dkwidget="WidgetType"** I'm instantiating the widgets by adding a
+    ``dkwidget="Button1"`` argument to the button html. This will be noticed on
+    *document.ready* and the widgets will be automatically instantiated.

@@ -16,7 +16,7 @@ def dkdj_create_page_var(context, varname='page'):
     """Create the variable ``page`` as a global variable for holding common page data, initially the 
        logged in user (request.user) is added.
        
-       Usage (my-template.html, place it early in the file so it's available to the rest of the code):
+       Usage (my-template.html, place it early in the file so it's available to the rest of the code)::
 
            {% block head %}
                {% dkdj_create_page_var %}
@@ -28,31 +28,31 @@ def dkdj_create_page_var(context, varname='page'):
                {% dkdj_create_page_var "page" %}
            {% endblock %}
            
-       You can explicitly name the variable to use (although it's strongly suggested to keep the default "page"):
+       You can explicitly name the variable to use (although it's strongly suggested to keep the default "page")::
        
            {% block head %}
                {% dkdj_create_page_var "my_special_page_var_name" %}
            {% endblock %}
            
-       In your javascript code (that is not in the template) you can then add to the page var by:
+       In your javascript code (that is not in the template) you can then add to the page var by::
        
            dk.global.page.foo = {{ my_template_var|jsonval }};
        
        and read from it similarly, ie. `alert(dk.global.page.user.username)`. 
        
-       Soon, all browsers will support the `globalThis` variable:
+       Soon, all browsers will support the `globalThis` variable::
        
            globalThis.page.foo = "bar";
            
-       right now (2019), using the `window` variable will work (in the browser):
+       right now (2019), using the `window` variable will work (in the browser)::
        
            window.page.foo = "bar";
        
-       In your template file, where the page variable is declared, you can simply do:
+       In your template file, where the page variable is declared, you can simply do::
        
            page.foo = "bar";
        
-       of for multiple values:
+       of for multiple values::
        
            Object.assign(page, {
                foo: 'bar',
