@@ -443,6 +443,7 @@ export class UIWidget extends BaseWidget {
             if (locations.length === 0) throw `Location ${loc} not found in document.`;
             const widgets = [];
             locations.each((n, location) => {
+                console.log("CREATE_ON:", loc, attrs);
                 const w = new this(attrs);
                 page.create_widget(w, {on: dk.$(location)});
                 widgets.push(w);
@@ -461,8 +462,11 @@ export class UIWidget extends BaseWidget {
             if (locations.length === 0) throw `Location ${loc} not found in document.`;
             const widgets = [];
             locations.each((n, location) => {
+                console.log("CREATE_INSIDE:", "loc:", loc, "location:", location, "locations:", locations, attrs);
                 const w = new this(attrs);
+                console.log("CREATED:WIDGET:", w);
                 page.create_widget(w, {inside: dk.$(location)});
+                widgets.push(w);
             });
             return widgets.length === 1 ? widgets[0] : widgets;
         } catch (e) {
@@ -480,6 +484,7 @@ export class UIWidget extends BaseWidget {
             locations.each((n, location) => {
                 const w = new this(attrs);
                 page.create_widget(w, {inside: dk.$(location), append: true});
+                widgets.push(w);
             });
             return widgets.length === 1 ? widgets[0] : widgets;
         } catch (e) {

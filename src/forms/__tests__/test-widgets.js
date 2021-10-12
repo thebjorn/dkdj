@@ -49,6 +49,9 @@ test("duration-create-inside", () => {
         </div>
     `;
     const work = $('#work');
+    console.log("WORK:", work);
+    console.log("WORK:", work.length);
+    console.log("WORK:", Array.isArray(work));
     page.initialize(document);
     
     const w = DurationWidget.create_inside(work);
