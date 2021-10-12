@@ -43,8 +43,6 @@ export class TableHeader  extends TableCell {
             self.widget().on('click', function () {
                 self.table.set_sort(self);
             });
-            // $bind('sort@icon -> set_sort_cursor@me', {icon:this.sort_icon, me: this});
-            // dk.on(this.sort_icon, 'sort', this.FN('set_sort_cursor'));
             dk.on(this.sort_icon, 'sort', () => this.set_sort_cursor());
         }
     }

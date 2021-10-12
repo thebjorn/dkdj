@@ -22,6 +22,8 @@ import {env, loglevels} from "./lifecycle-parse-script-tag";
 
 export const dkconsole = {
     error(...args) {
+        // if you get here from a test it's because console.error raises an 
+        // error not because of a code issue
         if (env.LOGLEVEL >= loglevels.ERROR && globalThis.console && globalThis.console.error) globalThis.console.error(...args);
     },
     warn(...args) {

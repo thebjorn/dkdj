@@ -131,7 +131,8 @@ export class DataSet extends Class {
     // synchronize dirty elements on page to datasource.
     update() {
         this.pages = {};  // clear cache
-        this.page.update(this.datasource, this.FN('_new_recordset'));
+        // this.page.update(this.datasource, this.FN('_new_recordset'));
+        this.page.update(this.datasource, (...args) => this._new_recordset(...args));
         // this.page.update(this.datasource, function (recordset) {
         //     self._new_recordset(self._get_records(null, recordset));
         // });
@@ -212,7 +213,6 @@ export class DataSet extends Class {
         const key = query.toCacheKey();
         if (!this.pages[key]) {
             // dk.info("GET-PAGE... NOT cached!");
-            // this.datasource.get_records(query, this.FN('_new_recordset'));
             this.datasource.get_records(query, recordset => {
                 // _new_recordset sets this.page
                 this._new_recordset(recordset, query);

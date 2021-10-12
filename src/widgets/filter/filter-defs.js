@@ -63,7 +63,6 @@ export class FilterDefBase extends UIWidget {
     fetch_options() {
         if (this.needs_options) {
             if (this.datafilter && this.datafilter.dataset) {
-                // this.datafilter.dataset.get_filter_data(this.name, this.FN('draw'));
                 this.datafilter.dataset.get_filter_data(this.name, opts => {
                     this.draw(opts);
                     // eslint-disable-next-line no-console

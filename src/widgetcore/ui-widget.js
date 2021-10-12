@@ -438,12 +438,10 @@ export class UIWidget extends BaseWidget {
         // we _must_ generate an id for this widget, so that
         // this.widget() works.
         try {
-            // if (!location.jquery) location = dk.$(location);
             const locations = (typeof loc === 'string') ? dk.$(loc) : loc;
             if (locations.length === 0) throw `Location ${loc} not found in document.`;
             const widgets = [];
             locations.each((n, location) => {
-                console.log("CREATE_ON:", loc, attrs);
                 const w = new this(attrs);
                 page.create_widget(w, {on: dk.$(location)});
                 widgets.push(w);
@@ -462,9 +460,7 @@ export class UIWidget extends BaseWidget {
             if (locations.length === 0) throw `Location ${loc} not found in document.`;
             const widgets = [];
             locations.each((n, location) => {
-                console.log("CREATE_INSIDE:", "loc:", loc, "location:", location, "locations:", locations, attrs);
                 const w = new this(attrs);
-                console.log("CREATED:WIDGET:", w);
                 page.create_widget(w, {inside: dk.$(location)});
                 widgets.push(w);
             });

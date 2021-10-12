@@ -139,9 +139,9 @@ export class TreeWidget extends UIWidget {
     }
 
     construct() {
-        dk.on(this.tree_data, 'fetch-data-start').run(this.FN('start_busy'));
-        dk.on(this.tree_data, 'fetch-data').run(this.FN('draw'));
-        dk.on(this.tree_data, 'fetch-data').run(this.FN('end_busy'));
+        dk.on(this.tree_data, 'fetch-data-start', () => this.start_busy());
+        dk.on(this.tree_data, 'fetch-data', () => this.draw());
+        dk.on(this.tree_data, 'fetch-data', () => this.end_busy());
     }
 
     draw(data) {

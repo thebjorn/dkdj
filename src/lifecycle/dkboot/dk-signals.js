@@ -68,6 +68,8 @@ export function on(obj, signal, optfn) {
     if (env.DEBUG && env.LOGLEVEL >= BINDING_NOTIFY_LEVEL) {
         if (obj && signal && optfn) {
             dkconsole.debug(`dk.on(${debugstr(obj)}, "${signal}", run: ${optfn.toString()})`);
+        } else if (obj && signal) {
+            dkconsole.debug(`dk.on(${debugstr(obj)}, "${signal}", run: no-fn)`);
         } else {
             dkconsole.error("dk.on argument error:", obj, signal, optfn);
             if (!obj) throw new Error("Can't listen on undefined object: " + obj);
@@ -76,8 +78,7 @@ export function on(obj, signal, optfn) {
     if (obj === undefined) {
         throw new Error("Cannot listen on undefined object: " + obj);
     }
-    const items = Array.isArray(obj) ? obj : [obj]; 
-    items.forEach(item => {
+    const attach_listener = (item, signal, fn) => {
         if (optfn !== undefined) {
             _attach_listener(item, signal, optfn);
         } else {
@@ -87,7 +88,18 @@ export function on(obj, signal, optfn) {
                 }
             };
         }
-    });
+    };
+    if (!Array.isArray(obj)) {
+        attach_listener(obj, signal, optfn);
+    } else if (!optfn) {
+        dkconsole.error(`
+            The dk.on(obj, signal).run(fn) form can only be used on single objects.
+            If obj is an array, you'll need to use dk.on(obj, signal, fn).
+        `);
+        throw new Error("dk.on([array], signal).run(fn) is not allowed.");
+    } else {
+        obj.forEach(item => attach_listener(item, signal, optfn));
+    }
 }
 
 

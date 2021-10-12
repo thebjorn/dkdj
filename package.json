@@ -1,6 +1,6 @@
 {
   "name": "@norsktest/dkdj",
-  "version": "3.0.39",
+  "version": "3.0.40",
   "description": "dk widgets and more..",
   "module": "lib/dk.js",
   "main": "lib/dk.js",
@@ -8,13 +8,17 @@
     "@norsktest:registry": "https://gitlab.com/api/v4/projects/13965270/packages/npm/"
   },
   "scripts": {
-    "prepublish": "set DKBUILD_TYPE=NPM && webpack",
+    "prepublish": "set DKBUILD_TYPE=NPM && npx webpack",
     "test": "jest --coverage",
     "coverage": "jest --coverage && start build/coverage/index.html",
     "docs": "jsdoc -r -P ./package.json -R ./README.md src -d ./out --verbose && start out/index.html",
     "build": "webpack --cache --progress && wc -c dist/*",
     "flow": "flow",
     "watch": "webpack --cache --watch --progress"
+  },
+  "engines": {
+    "node": ">=16.5",
+    "npm": ">=7"
   },
   "repository": "git+https://github.com/thebjorn/dkdj.git",
   "author": "Bjorn Pettersen",
