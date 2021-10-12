@@ -1,3 +1,3 @@
 // LVL:0
 
-export const version = '3.0.40';
+export const version = '3.0.41';

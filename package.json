@@ -1,6 +1,6 @@
 {
   "name": "@norsktest/dkdj",
-  "version": "3.0.40",
+  "version": "3.0.41",
   "description": "dk widgets and more..",
   "module": "lib/dk.js",
   "main": "lib/dk.js",
@@ -13,6 +13,7 @@
     "coverage": "jest --coverage && start build/coverage/index.html",
     "docs": "jsdoc -r -P ./package.json -R ./README.md src -d ./out --verbose && start out/index.html",
     "build": "webpack --cache --progress && wc -c dist/*",
+    "update-browsers": "npx browserslist@latest --update-db",
     "flow": "flow",
     "watch": "webpack --cache --watch --progress"
   },
