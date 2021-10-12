@@ -17,7 +17,7 @@
     "watch": "webpack --cache --watch --progress"
   },
   "engines": {
-    "node": ">=16.5",
+    "node": ">=16",
     "npm": ">=7"
   },
   "repository": "git+https://github.com/thebjorn/dkdj.git",
