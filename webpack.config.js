@@ -149,18 +149,27 @@ const prod_settings = merge(common_settings, {
 });
 
 const npm_settings = {
-    mode: 'production',
+    // mode: 'production',
+    mode: 'development',
     entry: {
         dk: './src/index.js',
     },
-    // devtool: 'source-map',
-    target: 'node',
+    devtool: 'eval-source-map',
+    target: 'node16.5',
+    // target: 'node',
+    // target: 'browserslist',                 // self is not defined
+    // target: 'es2020',
+    // target: 'web',                      // self not defined
+
     output: {
         path: path.resolve(__dirname, 'lib/'),
         filename: '[name].js',
-        library: LIBRARY_NAME,
-        libraryTarget: 'umd',
-        umdNamedDefine: true,
+        library: {
+            name: LIBRARY_NAME,
+            type: 'umd',
+            umdNamedDefine: true,
+    
+        },
     },
     module: {
         rules: [
@@ -190,7 +199,7 @@ const npm_settings = {
     plugins: [],
     externals: {
         jQuery: 'jquery',
-        "pusher-js": 'Pusher',
+        // "pusher-js": 'Pusher',
     }
 };
 

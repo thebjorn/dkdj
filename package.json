@@ -8,7 +8,6 @@
     "@norsktest:registry": "https://gitlab.com/api/v4/projects/13965270/packages/npm/"
   },
   "scripts": {
-    "prepublish": "set DKBUILD_TYPE=NPM && npx webpack",
     "test": "jest --coverage",
     "coverage": "jest --coverage && start build/coverage/index.html",
     "docs": "jsdoc -r -P ./package.json -R ./README.md src -d ./out --verbose && start out/index.html",
@@ -28,10 +27,30 @@
     "url": "https://github.com/thebjorn/dkdj/issues"
   },
   "homepage": "https://github.com/thebjorn/dkdj#readme",
+  "dependencies": {
+    "@babel/cli": "^7.14.5",
+    "@babel/polyfill": "^7.2.5",
+    "@babel/runtime": "^7.14.6",
+    "@babel/runtime-corejs3": "^7.15.4",
+    "@webcomponents/webcomponentsjs": "^2.2.7",
+    "core-js": "^3.15.2",
+    "css-loader": "^6.0.0",
+    "cssnano": "^5.0.6",
+    "jest-haste-map": "^27.0.6",
+    "jest-resolve": "^27.0.6",
+    "lit-element": "^2.5.1",
+    "lodash.debounce": "^4.0.8",
+    "lodash.template": "^4.4.0",
+    "lodash.throttle": "^4.1.1",
+    "pusher-js": "^7.0.3",
+    "style-loader": "^3.1.0",
+    "sugarcss": "^1.0.3",
+    "to-string-loader": "^1.1.5",
+    "url-loader": "^4.1.1"
+  },
   "devDependencies": {
     "@babel/core": "^7.14.6",
     "@babel/plugin-proposal-class-properties": "^7.14.5",
-    "@babel/plugin-proposal-decorators": "^7.14.5",
     "@babel/plugin-transform-flow-strip-types": "^7.14.5",
     "@babel/plugin-transform-for-of": "^7.14.5",
     "@babel/plugin-transform-modules-commonjs": "^7.14.5",
@@ -72,26 +91,5 @@
     "webpack-merge": "^5.8.0",
     "webpack-stats-plugin": "^1.0.3",
     "webpack-visualizer-plugin2": "^1.0.0"
-  },
-  "dependencies": {
-    "@babel/cli": "^7.14.5",
-    "@babel/polyfill": "^7.2.5",
-    "@babel/runtime": "^7.14.6",
-    "@babel/runtime-corejs2": "^7.14.6",
-    "@webcomponents/webcomponentsjs": "^2.2.7",
-    "core-js": "^3.15.2",
-    "css-loader": "^6.0.0",
-    "cssnano": "^5.0.6",
-    "jest-haste-map": "^27.0.6",
-    "jest-resolve": "^27.0.6",
-    "lit-element": "^2.5.1",
-    "pusher-js": "^7.0.3",
-    "lodash.debounce": "^4.0.8",
-    "lodash.template": "^4.4.0",
-    "lodash.throttle": "^4.1.1",
-    "style-loader": "^3.1.0",
-    "sugarcss": "^1.0.3",
-    "to-string-loader": "^1.1.5",
-    "url-loader": "^4.1.1"
   }
 }
