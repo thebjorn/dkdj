@@ -166,9 +166,9 @@ const npm_settings = {
         filename: '[name].js',
         library: {
             name: LIBRARY_NAME,
-            type: 'umd',
+            // type: 'umd',
+            type: 'commonjs2',
             umdNamedDefine: true,
-    
         },
     },
     module: {

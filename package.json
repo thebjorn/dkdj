@@ -36,8 +36,6 @@
     "core-js": "^3.15.2",
     "css-loader": "^6.0.0",
     "cssnano": "^5.0.6",
-    "jest-haste-map": "^27.0.6",
-    "jest-resolve": "^27.0.6",
     "lit-element": "^2.5.1",
     "lodash.debounce": "^4.0.8",
     "lodash.template": "^4.4.0",
@@ -50,9 +48,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.14.6",
-    "@babel/plugin-proposal-class-properties": "^7.14.5",
     "@babel/plugin-transform-flow-strip-types": "^7.14.5",
-    "@babel/plugin-transform-for-of": "^7.14.5",
     "@babel/plugin-transform-modules-commonjs": "^7.14.5",
     "@babel/plugin-transform-runtime": "^7.14.5",
     "@babel/preset-env": "7.14.7",

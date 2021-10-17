@@ -5,7 +5,7 @@ module.exports = function (api) {
         ["@babel/preset-env", {
             useBuiltIns: "usage",  // other option "entry"
             corejs: "3",
-            debug: true,
+            // debug: true,
         }],
         ["@babel/preset-flow"]
     ];

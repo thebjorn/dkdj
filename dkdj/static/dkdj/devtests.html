@@ -24,13 +24,29 @@
 </head>
 <body>
     <div class="container">
-        <h1 id="id-title">hello world</h1>
+        <h1 id="id-title">
+            hello world     <dk-icon style="color:hotpink" value="paw:2x,fw"></dk-icon>
+        </h1>
         <div id="dtatbl" class="table "></div>
     
 <!--        <div style="outline: 2px solid green; padding:4px;margin:4px;">-->
 <!--            <input id="dval" type="text" value="42">-->
 <!--        </div>-->
 <!--        <div id="input-box" style="outline: 2px solid red; padding:4px;margin:8px 4px;"></div>-->
+
+        <dk-panel>
+            <h1>Hello world</h1>
+            
+            Look ma, no tags..
+        </dk-panel>
+
+        <div style="display:inline-block;border:1px solid blue">
+            9900 = <dk-load url="https://cache.norsktest.no/ajax/poststed/9900/">
+                       LOADING...
+                   </dk-load>
+        </div>
+
+        <div id="tree1" style="margin:5px;"></div>
     </div>
     
     <script defer>
@@ -79,6 +95,82 @@
         });
         dt.ready(() => {
             dk.on(dt.table.table_data, 'fetch-data', d => console.log("FETCHED:", d));
+        });
+
+        const tds = dk.tree.JSonDataSource.create({
+            "depth": 2,
+            "height": 4,
+            "cache": {
+                "d329": {
+                    "kind": "department",
+                    "name": "Bar3",
+                    "parent": "c57",
+                    "id": "d329",
+                    "path": [
+                        "c57", "d329"
+                    ],
+                    "root": "c57",
+                    "children": []
+                },
+                "d328": {
+                    "kind": "department",
+                    "name": "Bar2",
+                    "parent": "c57",
+                    "id": "d328",
+                    "path": [
+                        "c57", "d328"
+                    ],
+                    "root": "c57",
+                    "children": []
+                },
+                "d3291": {
+                    "kind": "department",
+                    "name": "Foo 4",
+                    "parent": "c56",
+                    "id": "d3291",
+                    "path": [
+                        "c56", "d3291"
+                    ],
+                    "root": "c56",
+                    "children": []
+                },
+                "d3289": {
+                    "kind": "department",
+                    "name": "Foo 5",
+                    "parent": "c56",
+                    "id": "d3289",
+                    "path": [
+                        "c56", "d3289"
+                    ],
+                    "root": "c56",
+                    "children": []
+                },
+                "d32899": {"kind": "department", "name": "Foo 5", "parent": "c56", "id": "d32899", "path": ["c56", "d32899"], "root": "c56", "children": []},
+                "d328999": {"kind": "department", "name": "Foo 5", "parent": "c56", "id": "d328999", "path": ["c56", "d328999"], "root": "c56", "children": []},
+                "c56": {
+                    "kind": "company",
+                    "name": "Foo1",
+                    "parent": null,
+                    "id": "c56",
+                    "path": [
+                        "c56"
+                    ],
+                    "root": "c56",
+                    "children": ['d3291', 'd3289', 'd32899', 'd328999']
+                },
+                "c55": {"kind": "company", "name": "Bar4", "parent": null, "id": "c55", "path": ["c55"], "root": "c55", "children": []},
+                "c54": {"kind": "company", "name": "Bar5", "parent": null, "id": "c54", "path": ["c54"], "root": "c54", "children": []},
+                "c53": {"kind": "company", "name": "Bar6", "parent": null, "id": "c53", "path": ["c53"], "root": "c53", "children": []},
+                "c52": {"kind": "company", "name": "Bar7", "parent": null, "id": "c52", "path": ["c52"], "root": "c52", "children": []},
+                "c57": {"kind": "company", "name": "Bar1", "parent": null, "id": "c57", "path": ["c57"], "root": "c57", "children": ['d329', 'd328']}
+            },
+            "roots": ['c57', 'c56', 'c55', 'c54', 'c53', 'c52']
+        });
+        dk.TreeWidget.create_inside('#tree1', {
+            initial_collapse: false,
+            tree_data: tds,
+            // selectable: ['department'],
+            // multiselect: false
         });
 
         // const w = dk.forms.TextInputWidget.create_inside('#input-box', {
