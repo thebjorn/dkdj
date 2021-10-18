@@ -37,13 +37,13 @@ const page = {
     },
 
     storagekey(key) {
-        return window.location.hostname + window.location.pathname + ':' + key;
+        return globalThis.window.location.hostname + globalThis.window.location.pathname + ':' + key;
     },
 
     // environment
     localstorage: (function () {
         try {
-            return 'localStorage' in window && window.localStorage !== null;
+            return 'localStorage' in globalThis.window && globalThis.window.localStorage !== null;
         } catch (e) {
             return false;
         }
@@ -118,11 +118,11 @@ const page = {
         });
         _ready_queue = [];
 
-        dk.$(window).on('resize', throttle(function () {
+        dk.$(globalThis.window).on('resize', throttle(function () {
             mcall(self.widgets, 'flow');
         }, 25));
 
-        dk.$(window).on('unload', this.unload.bind(this));
+        dk.$(globalThis.window).on('unload', this.unload.bind(this));
     },
 
     reflow() {
@@ -193,23 +193,23 @@ const page = {
     _bind_q: []
 };
 
+if (globalThis._dk_browser) {
+    // module init
+    dk.$(document).ready(function () {
+        dkconsole.debug("initializing page");
+        page.initialize(document);
+        dk.$('html').addClass('dk-initialized');
+        dk.trigger(document, 'dk-initialized');
+        dkconsole.debug("document.ready: dk-initialized");
+    });
 
-// module init
-dk.$(document).ready(function () {
-    dkconsole.debug("initializing page");
-    page.initialize(document);
-    dk.$('html').addClass('dk-initialized');
-    dk.trigger(document, 'dk-initialized');
-    dkconsole.debug("document.ready: dk-initialized");
-});
-
-dk.$(window).on('load', function () {
-    // add css class that enables css animations.
-    dk.$('html').addClass('dk-fully-loaded');
-    dk.trigger(window, 'dk-fully-loaded');
-    dkconsole.debug("window.load: dk-fully-loaded");
-});
-
+    dk.$(window).on('load', function () {
+        // add css class that enables css animations.
+        dk.$('html').addClass('dk-fully-loaded');
+        dk.trigger(window, 'dk-fully-loaded');
+        dkconsole.debug("window.load: dk-fully-loaded");
+    });
+}
 
 globalThis.$$ = page.widgets;
 // globalThis.$notify = page.trigger.bind(page);

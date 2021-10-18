@@ -13,9 +13,11 @@ const dkglobal = (function () {
 if (typeof globalThis === 'undefined') {
     dkglobal.globalThis = dkglobal;
 }
-dkglobal._dk_have_document = typeof document !== 'undefined';
+dkglobal._dk_has_document = typeof document !== 'undefined';
+dkglobal._dk_node = !dkglobal._dk_has_document;
+dkglobal._dk_browser = !dkglobal._dk_node;
 
-if (dkglobal._dk_have_document) {
+if (dkglobal._dk_has_document) {
     // eslint-disable-next-line no-console
     console.debug("dkdj loaded from:", document.currentScript);
 }
@@ -23,7 +25,7 @@ if (dkglobal._dk_have_document) {
 let _dk_script_tag = undefined;
 
 function _find_dk_script_tag() {
-    if (dkglobal._dk_have_document) {
+    if (dkglobal._dk_has_document) {
         // all but IE
         if (document.currentScript !== undefined) return document.currentScript;
         // ..for IE (get the last executed script -- oh, so hackish, but the alternatives are worse)

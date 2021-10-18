@@ -96,7 +96,7 @@ Object.assign(dk, {
     
     // externals
     $: $,
-    _jquery_version: $.fn.jquery,
+    // _jquery_version: $.fn.jquery,
 
     is,
     pick: pick,
