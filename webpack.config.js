@@ -199,7 +199,7 @@ const npm_settings = {
     },
     plugins: [],
     externals: {
-        // jquery: 'jQuery',
+        jquery: 'jQuery',
         // "pusher-js": 'Pusher',
     }
 };

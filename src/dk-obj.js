@@ -1,7 +1,7 @@
 // import and attach LVL:0-1 modules
 
 // jest needs these, webpack craps from them..
-import jQuery from 'jquery';
+import $ from 'jquery';
 
 
 import performance from "./performance-timer";
@@ -95,8 +95,8 @@ Object.assign(dk, {
     dedent: text.dedent,
     
     // externals
-    $: jQuery,
-    _jquery_version: jQuery.fn.jquery,
+    $: $,
+    _jquery_version: $.fn.jquery,
 
     is,
     pick: pick,
