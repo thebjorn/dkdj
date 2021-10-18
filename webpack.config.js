@@ -154,7 +154,8 @@ const npm_settings = {
     entry: {
         dk: './src/index.js',
     },
-    devtool: 'eval-source-map',
+    // devtool: 'eval-source-map',
+    devtool: 'source-map',
     target: 'node16.5',
     // target: 'node',
     // target: 'browserslist',                 // self is not defined
@@ -166,8 +167,8 @@ const npm_settings = {
         filename: '[name].js',
         library: {
             name: LIBRARY_NAME,
-            // type: 'umd',
-            type: 'commonjs2',
+            type: 'umd',
+            // type: 'commonjs2',
             umdNamedDefine: true,
         },
     },
@@ -198,7 +199,7 @@ const npm_settings = {
     },
     plugins: [],
     externals: {
-        jQuery: 'jquery',
+        // jquery: 'jQuery',
         // "pusher-js": 'Pusher',
     }
 };

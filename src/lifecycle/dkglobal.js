@@ -10,20 +10,27 @@ const dkglobal = (function () {
     if (typeof global !== 'undefined') { return global; }
     throw new Error('unable to locate global object');
 })();
-dkglobal.globalThis = dkglobal;
+if (typeof globalThis === 'undefined') {
+    dkglobal.globalThis = dkglobal;
+}
+dkglobal._dk_have_document = typeof document !== 'undefined';
 
-// eslint-disable-next-line no-console
-console.debug("dkdj loaded from:", document.currentScript);
-
+if (dkglobal._dk_have_document) {
+    // eslint-disable-next-line no-console
+    console.debug("dkdj loaded from:", document.currentScript);
+}
 
 let _dk_script_tag = undefined;
 
 function _find_dk_script_tag() {
-    // all but IE
-    if (document.currentScript !== undefined) return document.currentScript;
-    // ..for IE (get the last executed script -- oh, so hackish, but the alternatives are worse)
-    const scripts = document.getElementsByTagName('script');
-    return scripts[scripts.length - 1];
+    if (dkglobal._dk_have_document) {
+        // all but IE
+        if (document.currentScript !== undefined) return document.currentScript;
+        // ..for IE (get the last executed script -- oh, so hackish, but the alternatives are worse)
+        const scripts = document.getElementsByTagName('script');
+        return scripts[scripts.length - 1];
+    }
+    return null;
 }
 
 export function get_dk_script_tag() {
