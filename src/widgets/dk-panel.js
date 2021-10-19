@@ -7,6 +7,7 @@ import {fa4_icon, icon} from "./dk-icon-library";
 import styles from "../../styles/index.scss";
 
 (function () {
+    if (!dk.globals._dk_browser) return;
     if (dk.$('style#dkdj-styles').length === 0) {
         const style = `<style id="dkdj-styles">${styles.toString()}</style>`;
         dk.$('html>head').append(style);

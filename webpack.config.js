@@ -155,6 +155,9 @@ const npm_settings = {
         dk: './src/index.js',
     },
     // devtool: 'eval-source-map',
+    // devtool: 'eval-cheap-source-map',
+    // devtool: 'inline-module-source-map',
+    // devtool: 'eval-source-map',
     devtool: 'source-map',
     target: 'node16.5',
     // target: 'node',
@@ -167,6 +170,7 @@ const npm_settings = {
         filename: '[name].js',
         library: {
             name: LIBRARY_NAME,
+            export: 'default',
             type: 'umd',
             // type: 'commonjs2',
             umdNamedDefine: true,

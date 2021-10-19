@@ -23,7 +23,7 @@ module.exports = function (api) {
         "ignore": [
             "node_modules"
         ],
-        // sourceMap: 'inline',
-        sourceMap: true,
+        sourceMap: 'inline',
+        // sourceMap: true,
     };
 };

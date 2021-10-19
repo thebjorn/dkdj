@@ -42,6 +42,7 @@ const page = {
 
     // environment
     localstorage: (function () {
+        if (!globalThis?.window?.localStorage) return false;
         try {
             return 'localStorage' in globalThis.window && globalThis.window.localStorage !== null;
         } catch (e) {
@@ -193,7 +194,8 @@ const page = {
     _bind_q: []
 };
 
-if (globalThis._dk_browser) {
+// if (globalThis._dk_browser) {
+page.ready(() => {
     // module init
     dk.$(document).ready(function () {
         dkconsole.debug("initializing page");
@@ -209,7 +211,13 @@ if (globalThis._dk_browser) {
         dk.trigger(window, 'dk-fully-loaded');
         dkconsole.debug("window.load: dk-fully-loaded");
     });
-}
+});
+// } else {
+//     page.ready(() => {
+//         dkconsole.debug('delayed page init');
+//        
+//     });
+// }
 
 globalThis.$$ = page.widgets;
 // globalThis.$notify = page.trigger.bind(page);

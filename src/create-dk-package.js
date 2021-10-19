@@ -151,6 +151,8 @@ import {DataWidget} from "./widgetcore/data-widget";
 import {ServerWidget} from "./widgetcore/server-widget";
 import {HashStorage} from "./data/state/hash-storage";
 import {ValueRef} from "./data/source/dk-datasource-base";
+import globalThis from "./lifecycle/dkglobal";
+import {init_test} from "./widgetcore/test-utils";
 
 if (!String.prototype.format) {
     String.prototype.format = function (...args) {
@@ -161,6 +163,8 @@ if (!String.prototype.format) {
 
 (function () {
     dk.add({
+        page,
+        init_test,
         sys,
         // core,
         ColumnDef,
@@ -387,6 +391,7 @@ if (!String.prototype.format) {
             PostnrLookupWidget
         },
         ready(fn) {
+            if (!globalThis._dk_browser) return;
             dk.$(fn);
         }
     });
@@ -424,9 +429,10 @@ if (!String.prototype.format) {
         jq_help_button(dk);
         jq_get_attributes(dk);
         jq_toggle_busy(dk);
-        
+
         dk.info('dk-fully-loaded');
     });
+    
 })();
 
 export {dk};
