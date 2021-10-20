@@ -36,6 +36,12 @@
 
         <dk-panel>
             <h1>Hello world</h1>
+
+            <div>Inside div..</div>
+        </dk-panel>
+        
+        <dk-panel>
+            <h1>Hello world</h1>
             
             Look ma, no tags..
         </dk-panel>
@@ -49,7 +55,7 @@
         <div id="tree1" style="margin:5px;"></div>
     </div>
     
-    <script defer>
+    <script>
         // const dvref = new dk.ValueRef({pk:0, field:''});
         // dk.on(dvref, 'value-changed', v => $('#dval').val(v));
         const ds = dk.data.DataSet.create({
@@ -166,6 +172,7 @@
             },
             "roots": ['c57', 'c56', 'c55', 'c54', 'c53', 'c52']
         });
+
         dk.TreeWidget.create_inside('#tree1', {
             initial_collapse: false,
             tree_data: tds,

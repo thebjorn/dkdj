@@ -31,19 +31,24 @@ const page = {
     },
 
     create_widget(widget, location) {
-        if (!this._initialized)
+        // console.log("page:create_sidget:start")
+        if (!this._initialized) {
+            // console.log('CACHE:WIDGET_INIT', widget, location);
             return this._cache_widget_init(widget, location);
+        }
         widget.construct_widget(location);
+        // console.log("page:create_sidget:end")
     },
 
     storagekey(key) {
-        return window.location.hostname + window.location.pathname + ':' + key;
+        return globalThis.window.location.hostname + globalThis.window.location.pathname + ':' + key;
     },
 
     // environment
     localstorage: (function () {
+        if (!globalThis?.window?.localStorage) return false;
         try {
-            return 'localStorage' in window && window.localStorage !== null;
+            return 'localStorage' in globalThis.window && globalThis.window.localStorage !== null;
         } catch (e) {
             return false;
         }
@@ -89,7 +94,6 @@ const page = {
     },
 
     initialize(doc) {
-
         // cleanup widget queue
         this._initialized = true;
         for (let i = 0; i < this._widget_q.length; i++) {
@@ -118,11 +122,11 @@ const page = {
         });
         _ready_queue = [];
 
-        dk.$(window).on('resize', throttle(function () {
+        dk.$(globalThis.window).on('resize', throttle(function () {
             mcall(self.widgets, 'flow');
         }, 25));
 
-        dk.$(window).on('unload', this.unload.bind(this));
+        dk.$(globalThis.window).on('unload', this.unload.bind(this));
     },
 
     reflow() {
@@ -193,23 +197,29 @@ const page = {
     _bind_q: []
 };
 
+function _module_init() {
+    dk.$(document).ready(function () {
+        dkconsole.debug("initializing page");
+        page.initialize(document);
+        dk.$('html').addClass('dk-initialized');
+        dk.trigger(document, 'dk-initialized');
+        dkconsole.debug("document.ready: dk-initialized");
+    });
 
-// module init
-dk.$(document).ready(function () {
-    dkconsole.debug("initializing page");
-    page.initialize(document);
-    dk.$('html').addClass('dk-initialized');
-    dk.trigger(document, 'dk-initialized');
-    dkconsole.debug("document.ready: dk-initialized");
-});
+    dk.$(window).on('load', function () {
+        // add css class that enables css animations.
+        dk.$('html').addClass('dk-fully-loaded');
+        dk.trigger(window, 'dk-fully-loaded');
+        dkconsole.debug("window.load: dk-fully-loaded");
+    });
+}
 
-dk.$(window).on('load', function () {
-    // add css class that enables css animations.
-    dk.$('html').addClass('dk-fully-loaded');
-    dk.trigger(window, 'dk-fully-loaded');
-    dkconsole.debug("window.load: dk-fully-loaded");
-});
-
+if (globalThis._dk_browser) {
+    _module_init();
+} else {
+    // if not in a browser, you'll need to call dk.page.initialize(document)
+    // when you have a document object
+}
 
 globalThis.$$ = page.widgets;
 // globalThis.$notify = page.trigger.bind(page);

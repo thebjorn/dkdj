@@ -1,8 +1,12 @@
 
+import globalThis from "./dkglobal"
+
 const state = {};
 
 
 export default function setup_loaders(dk) {
+    if (!globalThis._dk_has_document) return;
+    
     dk.performance('setup-loaders-start');
     
     const _url2name = function (url) {

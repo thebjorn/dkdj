@@ -1,4 +1,4 @@
-
+import globalThis from "../../lifecycle/dkglobal";
 import {StorageBase} from "./storage";
 
 
@@ -6,7 +6,8 @@ export class LocalStorage extends StorageBase {
     constructor(engine) {
         super();
         this.name = 'LocalStorage';
-        this.engine = engine || window.localStorage;
+        // FIXME: coming from dk-page.js :: page.hash = new State(...)
+        this.engine = engine || globalThis.window.localStorage;
 
         this.capabilities = {
             flat: true,

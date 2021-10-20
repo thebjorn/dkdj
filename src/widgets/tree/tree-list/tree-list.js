@@ -150,7 +150,7 @@ export class TreeWidget extends UIWidget {
             this.tree_data.fetch();
         } else {
             this.trigger('draw-start', this);
-            dk.debug("start tree draw", new Date());
+            // dk.debug("start tree draw", new Date());
             this.panel_body.tree.empty();
             this.roots = this.tree_data.roots.map(r => {
                 return r.visit(this.panel_body.tree, this);
@@ -160,7 +160,7 @@ export class TreeWidget extends UIWidget {
                     r.collapse(true);
                 });
             }
-            dk.debug("finished tree draw", new Date());
+            // dk.debug("finished tree draw", new Date());
             this.trigger('draw-end', this);
         }
     }

@@ -4,6 +4,7 @@ import {CookieStorage} from "./cookie-storage";
 import {LocalStorage} from "./local-storage";
 import {SessionStorage} from "./session-storage";
 import {HashStorage} from "./hash-storage";
+import {MemoryStorage} from "./memory-storage";
 
 /**
  * The State class enables pages (and especially widgets on pages) to save and restore
@@ -37,7 +38,7 @@ export class State {
         this.name = name;
         this._values = null;
         this._engine_state = "null";
-        this.engine = engine ? (new engine()) : (new LocalStorage());
+        this.engine = engine ? (new engine()) : (new MemoryStorage());
         this.state = {hello: 'world'};  // fixme: backwards compatibility
     }
     
