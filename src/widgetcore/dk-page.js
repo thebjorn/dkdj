@@ -31,9 +31,13 @@ const page = {
     },
 
     create_widget(widget, location) {
-        if (!this._initialized)
+        // console.log("page:create_sidget:start")
+        if (!this._initialized) {
+            // console.log('CACHE:WIDGET_INIT', widget, location);
             return this._cache_widget_init(widget, location);
+        }
         widget.construct_widget(location);
+        // console.log("page:create_sidget:end")
     },
 
     storagekey(key) {
@@ -90,7 +94,6 @@ const page = {
     },
 
     initialize(doc) {
-
         // cleanup widget queue
         this._initialized = true;
         for (let i = 0; i < this._widget_q.length; i++) {
@@ -194,9 +197,7 @@ const page = {
     _bind_q: []
 };
 
-// if (globalThis._dk_browser) {
-page.ready(() => {
-    // module init
+function _module_init() {
     dk.$(document).ready(function () {
         dkconsole.debug("initializing page");
         page.initialize(document);
@@ -211,13 +212,14 @@ page.ready(() => {
         dk.trigger(window, 'dk-fully-loaded');
         dkconsole.debug("window.load: dk-fully-loaded");
     });
-});
-// } else {
-//     page.ready(() => {
-//         dkconsole.debug('delayed page init');
-//        
-//     });
-// }
+}
+
+if (globalThis._dk_browser) {
+    _module_init();
+} else {
+    // if not in a browser, you'll need to call dk.page.initialize(document)
+    // when you have a document object
+}
 
 globalThis.$$ = page.widgets;
 // globalThis.$notify = page.trigger.bind(page);

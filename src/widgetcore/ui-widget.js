@@ -228,7 +228,6 @@ export class UIWidget extends BaseWidget {
      *  page has been initialized.
      */
     construct_widget(location) {
-        // dk.debug('construct widget', this);
         if (location.on && this.dom_template) throw `
             You cannot use a dom_template with .create_on(..),
             either use .create_inside(..) or .append_to(..)
@@ -434,6 +433,12 @@ export class UIWidget extends BaseWidget {
         return this.create_on(location, attrs);
     }
 
+    static _create_widget(attrs, loc) {
+        const w = new this(attrs);
+        page.create_widget(w, loc);
+        return w;
+    }
+    
     static create_on(loc, attrs) {
         // we _must_ generate an id for this widget, so that
         // this.widget() works.
@@ -441,11 +446,7 @@ export class UIWidget extends BaseWidget {
             const locations = (typeof loc === 'string') ? dk.$(loc) : loc;
             if (locations.length === 0) throw `Location ${loc} not found in document.`;
             const widgets = [];
-            locations.each((n, location) => {
-                const w = new this(attrs);
-                page.create_widget(w, {on: dk.$(location)});
-                widgets.push(w);
-            });
+            locations.each((n, location) => widgets.push(this._create_widget(attrs, {on: dk.$(location)})));
             return widgets.length === 1 ? widgets[0] : widgets;
         } catch (e) {
             dk.error(e);
@@ -459,11 +460,7 @@ export class UIWidget extends BaseWidget {
             const locations = (typeof loc === 'string') ? dk.$(loc) : loc;
             if (locations.length === 0) throw `Location ${loc} not found in document.`;
             const widgets = [];
-            locations.each((n, location) => {
-                const w = new this(attrs);
-                page.create_widget(w, {inside: dk.$(location)});
-                widgets.push(w);
-            });
+            locations.each((n, location) => widgets.push(this._create_widget(attrs, {inside: dk.$(location)}))); 
             return widgets.length === 1 ? widgets[0] : widgets;
         } catch (e) {
             dk.error(e);
@@ -477,11 +474,7 @@ export class UIWidget extends BaseWidget {
             const locations = (typeof loc === 'string') ? dk.$(loc) : loc;
             if (locations.length === 0) throw `Location ${loc} not found in document.`;
             const widgets = [];
-            locations.each((n, location) => {
-                const w = new this(attrs);
-                page.create_widget(w, {inside: dk.$(location), append: true});
-                widgets.push(w);
-            });
+            locations.each((n, location) => widgets.push(this._create_widget(attrs, {inside: dk.$(location), append: true}))); 
             return widgets.length === 1 ? widgets[0] : widgets;
         } catch (e) {
             dk.error(e);

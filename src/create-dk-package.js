@@ -391,8 +391,11 @@ if (!String.prototype.format) {
             PostnrLookupWidget
         },
         ready(fn) {
-            if (!globalThis._dk_browser) return;
-            dk.$(fn);
+            if (!globalThis._dk_browser) {
+                page.ready(fn);
+            } else {
+                dk.$(fn);
+            }
         }
     });
     
