@@ -203,7 +203,7 @@ const npm_settings = {
     },
     plugins: [],
     externals: {
-        jquery: 'jQuery',
+        // jquery: 'jQuery',
         // "pusher-js": 'Pusher',
     }
 };
@@ -218,6 +218,10 @@ module.exports = (function (build) {
             break;
         case 'NPM':
             res = npm_settings;
+            new webpack.ProvidePlugin({
+                $: 'jquery',
+                jQuery: 'jquery',
+            });
             break;
         default:
             res = dev_settings;

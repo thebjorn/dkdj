@@ -94,7 +94,7 @@ import dom from "./browser/dom";
 import {Template, DomItem} from "./browser/dk-dom-template";
 import utidy from "./browser/dk-html";
 import css from "./browser/dk-css";
-import old_vs_new from "./dk-old-vs-new";
+// import old_vs_new from "./dk-old-vs-new";
 import {jq_get_attributes, jq_help_button, jq_links2popup, jq_toggle_busy} from "./browser/jquery-plugins";
 import page from "./widgetcore/dk-page";
 import widgetmap from "./widgetcore/dk-widgetmap";
@@ -422,8 +422,6 @@ if (!String.prototype.format) {
     //     // <script hide-underscore src="/dkdj/dist/index.js"></script>
     //     globals._ = _;
     // }
-
-    // old_vs_new(dk);
 
     dk.info('dk loaded');
     dk.ready(function () {
