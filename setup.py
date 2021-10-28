@@ -34,3 +34,4 @@ setuptools.setup(
     author_email='bp@norsktest.no',
     description=''
 )
+
