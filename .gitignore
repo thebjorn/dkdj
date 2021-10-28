@@ -280,3 +280,4 @@ yarn-error.log*
 
 dkdj.dot  
 stats.json
+**/static/dkdj/**/dkdj*.min.js*
