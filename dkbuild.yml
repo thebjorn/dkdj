@@ -3,7 +3,7 @@ _schema: https://static.datakortet.no/schema/dkbuild.schema.yaml
 package:
   name: dkdj
   description: dk django-javascript library
-  version: 3.0.49
+  version: 3.0.52
   created: 2018
 
 directories:

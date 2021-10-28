@@ -13,9 +13,11 @@ Programming Language :: Javascript
 Topic :: Software Development :: Libraries
 """
 
+version = '3.0.52'
+
 setuptools.setup(
     name='dkdj',
-    version='3.0.48',
+    version=version,
     packages=setuptools.find_packages(exclude=['tests']),
     install_requires=[
         'ttcal',
