@@ -138,10 +138,10 @@ export class TreeWidget extends UIWidget {
         this.nodes = {};
     }
 
-    construct() {
-        dk.on(this.tree_data, 'fetch-data-start', () => this.start_busy());
-        dk.on(this.tree_data, 'fetch-data', () => this.draw());
-        dk.on(this.tree_data, 'fetch-data', () => this.end_busy());
+    handlers() {
+        dk.on(this.tree_data, 'fetch-data-start', (...args) => this.start_busy(...args));
+        dk.on(this.tree_data, 'fetch-data', (...args) => this.draw(...args));
+        dk.on(this.tree_data, 'fetch-data', (...args) => this.end_busy(...args));
     }
 
     draw(data) {
