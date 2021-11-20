@@ -1,16 +1,16 @@
 dkjason==3.0.1
 ttcal>=1.0.2
-six==1.12.0
+six==1.15.0
 future==0.18.1
-pytest==3.10.1
-pytest-cov==2.6.1
+pytest==6.1.2
+pytest-cov==2.12.1
 pytest-forked==1.0.2
 pytest-mock==1.10.1
 pytest-xdist==1.26.1
-pytest-django==3.1.2
+pytest-django==3.10.0
 bleach==3.1.5
 
-coverage==4.5.3
+coverage==5.5
 more-itertools<6.0.0
 
 django==1.8.19
