@@ -1,0 +1,11 @@
+build:
+  six: 1.15.0
+  future: 0.18.1
+  django: 1.8.19
+
+tests:
+  pytest-django: 3.10.0
+
+local:
+  - ttcal
+  - dkjason
