@@ -8,7 +8,7 @@ import {zip_object} from "../../collections";
 import {UIWidget} from "../../widgetcore/ui-widget";
 import is from "../../is";
 import {dkconsole} from "../../lifecycle/dkboot/dk-console";
-import {CustomFilterDef, SelectMultipleFilterDef, SelectOneFilterDef} from "./filter-defs";
+import {CustomFilterDef, DropdownFilterDef, SelectMultipleFilterDef, SelectOneFilterDef} from "./filter-defs";
 
 
 /*
@@ -104,7 +104,9 @@ export class DataFilter extends UIWidget {
         return Object.entries(this.filters).map(([filtername, filterdef]) => {
             filterdef.name = filtername;
             if (is.isProps(filterdef)) {
-                if (filterdef.select_multiple) {  // (a)
+                if (filterdef.type === 'dropdown') {
+                    return [filterdef, DropdownFilterDef];
+                } else if (filterdef.select_multiple) {  // (a)
                     // console.info("SELECT_MULTIPLE", filterdef);
                     return [filterdef, SelectMultipleFilterDef];
                 } else if (filterdef.construct_filter) {  // (b)

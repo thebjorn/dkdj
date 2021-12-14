@@ -1,6 +1,6 @@
 import {UIWidget} from "../../widgetcore/ui-widget";
 import dk from "../../dk-obj";
-import {CheckboxSelectWidget, RadioSelectWidget} from "../../forms/widgets";
+import {CheckboxSelectWidget, RadioSelectWidget, SelectWidget} from "../../forms/widgets";
 import {dkconsole} from "../../lifecycle/dkboot/dk-console";
 
 /**
@@ -139,6 +139,44 @@ export class SelectMultipleFilterDef extends FilterDefBase {
     construct() {
         // console.log("SELECT:MULTIPLE:FILTERDEFS:CONSTRUCT:VALUES:", this.values);
         this.input = CheckboxSelectWidget.create_on(this.filterbox.filtercontent, {
+            options: this.values,
+            name: this.name,
+            label: this.label
+        });
+        if (!this.values) this.fetch_options();
+    }
+}
+
+
+export class DropdownFilterDef extends FilterDefBase {
+    constructor(...args) {
+        super({
+            select_multiple: false,
+            structure: {
+                classes: ['filterdef'],
+                filterbox: {
+                    classes: [],
+                    filterheader: {
+                        template: 'header',
+                        filtertitle: {
+                            template: 'h3',
+                            text: ""
+                        }
+                    },
+                    filtercontent: {
+                        classes: ['filter', 'content']
+                    }
+                }
+            },
+            template: {
+                filtercontent: 'div',
+            }
+        }, ...args);
+        this.needs_options = true;
+    }
+
+    construct() {
+        this.input = SelectWidget.create_inside(this.filterbox.filtercontent, {
             options: this.values,
             name: this.name,
             label: this.label
