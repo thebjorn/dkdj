@@ -13,7 +13,7 @@ Programming Language :: Javascript
 Topic :: Software Development :: Libraries
 """
 
-version = '3.0.58'
+version = '3.0.59'
 
 setuptools.setup(
     name='dkdj',
