@@ -1,6 +1,6 @@
 {
   "name": "@norsktest/dkdj",
-  "version": "3.0.64",
+  "version": "3.0.65",
   "description": "dk widgets and more..",
   "module": "lib/dk.js",
   "main": "lib/dk.js",
