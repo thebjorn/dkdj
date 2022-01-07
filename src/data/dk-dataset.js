@@ -146,12 +146,12 @@ export class DataSet extends Class {
      * @returns {*}  - a DataQuery instance
      */
     get_state(query) {
-        if (!this.datasource.url) return query;
+        if (!this.datasource.url || !this.savestate) return query;
         return DataQuery.create(dk.hash.get(this.datasource.url, query.copy()), this);
     }
 
     set_state(query) {
-        if (this.datasource.url) {
+        if (this.datasource.url && this.savestate) {
             dk.hash[this.datasource.url] = query.copy();
         }
     }
@@ -196,13 +196,11 @@ export class DataSet extends Class {
     get_page(query) {
         query = DataQuery.create(query, this);
         // console.info("DATASET:GET:PAGE:QUERY:", this._first_fetch, query);
-        if (this.savestate) {
-            if (this._first_fetch) {
-                query = this.get_state(query);
-                this._first_fetch = false;
-            } else {
-                this.set_state(query);
-            }
+        if (this._first_fetch) {
+            query = this.get_state(query);
+            this._first_fetch = false;
+        } else {
+            this.set_state(query);
         }
         // console.info("DATASET:GET:PAGE:QUERY:2", this._first_fetch, query);
         
