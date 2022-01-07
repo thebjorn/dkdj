@@ -37,8 +37,10 @@ export class DataSet extends Class {
             pagesize: 25,
             orphans: 0,
             
+            savestate: true,
+            
         }, props));
-    
+        
         this.datasource.live_data = this;
         this._first_fetch = true;
         this.pages = {};
@@ -194,11 +196,13 @@ export class DataSet extends Class {
     get_page(query) {
         query = DataQuery.create(query, this);
         // console.info("DATASET:GET:PAGE:QUERY:", this._first_fetch, query);
-        if (this._first_fetch) {
-            query = this.get_state(query);
-            this._first_fetch = false;
-        } else {
-            this.set_state(query);
+        if (this.savestate) {
+            if (this._first_fetch) {
+                query = this.get_state(query);
+                this._first_fetch = false;
+            } else {
+                this.set_state(query);
+            }
         }
         // console.info("DATASET:GET:PAGE:QUERY:2", this._first_fetch, query);
         
