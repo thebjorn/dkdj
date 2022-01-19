@@ -1,7 +1,7 @@
-dkjason==3.0.1
+dkjason>=3.0.5
 ttcal>=1.0.2
 six==1.15.0
-future==0.18.1
+future==0.18.2
 pytest==6.1.2
 pytest-cov==2.12.1
 pytest-forked==1.0.2
@@ -13,7 +13,8 @@ bleach==3.1.5
 coverage==5.5
 more-itertools<6.0.0
 
-django==1.8.19
+django==1.8.19      ; python_version < '3.6'
+django==1.9.13      ; python_version >= '3.6'
 
 -e .
 codecov
