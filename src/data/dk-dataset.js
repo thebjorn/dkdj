@@ -37,8 +37,10 @@ export class DataSet extends Class {
             pagesize: 25,
             orphans: 0,
             
+            savestate: true,
+            
         }, props));
-    
+        
         this.datasource.live_data = this;
         this._first_fetch = true;
         this.pages = {};
@@ -144,12 +146,12 @@ export class DataSet extends Class {
      * @returns {*}  - a DataQuery instance
      */
     get_state(query) {
-        if (!this.datasource.url) return query;
+        if (!this.datasource.url || !this.savestate) return query;
         return DataQuery.create(dk.hash.get(this.datasource.url, query.copy()), this);
     }
 
     set_state(query) {
-        if (this.datasource.url) {
+        if (this.datasource.url && this.savestate) {
             dk.hash[this.datasource.url] = query.copy();
         }
     }
