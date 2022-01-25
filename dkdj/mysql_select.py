@@ -1,11 +1,15 @@
 """
 A simple wrapper around an SQL select statement.
 """
+from django.core.cache import cache
+
+import ttcal
 
 
 class SelectStmt(object):
     def __init__(self, select, from_, where="",
-                 group_by="", order_by="", limit="", offset=""):
+                 group_by="", order_by="", limit="", offset="", 
+                 cached=False, cache_duration_hours=2, cache_duration_minutes=0):
         self.select = select
         self.from_ = from_
         self.where = where
@@ -16,6 +20,9 @@ class SelectStmt(object):
 
         self.args = []
         self.columns = None
+        self.cached = cached
+        self.cache_duration_hours = cache_duration_hours
+        self.cache_duration_minutes = cache_duration_minutes
 
     def __repr__(self):
         return "%s (%s)" % (self.get_sql(), self.args)
@@ -36,12 +43,33 @@ class SelectStmt(object):
         if self.offset:
             sql += "\noffset %s" % self.offset
         return sql
-
-    def execute(self, cursor):
-        cursor.execute(self.get_sql(), self.args)
+    
+    def _execute(self, cursor, sql):
+        cursor.execute(sql, self.args)
         self.columns = [d[:] for d in cursor.description]
         self.rowcount = cursor.rowcount
         return cursor.fetchall()
+
+    def execute(self, cursor):
+        sql = self.get_sql()
+        if self.cached:
+            key = "CachedSelectStmt_{}_{}".format(sql, self.args)
+            res = cache.get(key)
+            if res:
+                object_list, self.columns, self.rowcount = res
+            else:                
+                object_list = self._execute(cursor, sql)   
+                cache.set(
+                    key,
+                    (object_list, 
+                        [d[:] for d in cursor.description], 
+                        cursor.rowcount),
+                    int(ttcal.Duration(
+                        hours=self.cache_duration_hours, 
+                        minutes=self.cache_duration_minutes).total_seconds()))
+        else:            
+            object_list = self._execute(cursor, sql)
+        return object_list
 
     def add_from(self, from_):
         self.from_ += "\n" + from_
