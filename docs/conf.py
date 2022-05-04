@@ -25,9 +25,9 @@ copyright = u'2018, Bjorn Pettersen'
 author = u'Bjorn Pettersen'
 
 # The short X.Y version
-version = '3.0.67'
+version = '3.0.68'
 # The full version, including alpha/beta/rc tags
-release = '3.0.67'
+release = '3.0.68'
 
 
 # -- General configuration ---------------------------------------------------
