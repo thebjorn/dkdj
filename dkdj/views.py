@@ -507,9 +507,7 @@ class ModelGrid(Resultset):
             raise ValueError("Modelgrid doesn't declare a model..")
         if self.columns is not None:
             if len(self.columns) != len(set(self.columns)):
-                raise ValueError("Duplicated columns detected: {}".format(
-                    self.columns
-                ))
+                raise ValueError(f"Duplicated columns detected: {self.columns}")
             
             cols = grid.Model(self.model).column
             return [getattr(cols, col) for col in self.columns]
