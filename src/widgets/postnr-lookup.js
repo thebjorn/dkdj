@@ -23,7 +23,7 @@ export class PostnrLookupWidget extends Widget {
             zipcode: null,  // url paramter
             postcode_id: null,
             city_id: null,
-            postcode_url: () => `//cache.norsktest.no/ajax/poststed/${this.zipcode}/`,
+            postcode_url: () => `https://cache.norsktest.no/ajax/poststed/${this.zipcode}/`,
         }, ...args);
     }
 
@@ -32,24 +32,44 @@ export class PostnrLookupWidget extends Widget {
         this.$poststed = this.city_id ? this.widget(this.city_id) : this.widget('[name=city]');
         this.$poststed.attr('tabindex', 7);
         this.zipcode = this.$postnr.val();
+        this._submitting = false;
     }
 
     draw(poststed) {
         if (poststed !== undefined) this.$poststed.val(poststed || '');
     }
 
+    do_lookup() {
+        const self = this;
+        this.zipcode = this.$postnr.val();
+        dk.$.ajax({  // can't use dk.ajax here, since we're doing a cors call
+            cache: false,
+            crossDomain: true,
+            url: self.postcode_url(),
+            success(data) {
+                self.draw(data);
+                if (self._submitting) self.widget().trigger('submit');
+            }
+        });
+    }
+
     handlers() {
         const self = this;
-        
-        this.$postnr.on('blur', () => {
-            this.zipcode = this.$postnr.val();
-            dk.$.ajax({  // can't use dk.ajax here, since we're doing a cors call
-                cache: false,
-                url: self.postcode_url(),
-                success(data) {
-                    self.draw(data);
-                }
-            });
-        });
+        this.$postnr.on('blur', () => this.do_lookup());
+
+        /*
+         * If the zip code field is the last field before the submit button, the user could
+         * hit return after changing the zip, thus triggering a form-submit, but not 
+         * a field-blur. Handle it by doing an extra do_lookup.
+         * (NOTE: self.widget() is the form)
+         */
+        this.widget().on('submit', function (e) {
+            if (self._submitting) return true;
+
+            e.preventDefault();
+            self._submitting = true;
+            self.do_lookup();
+            return false;
+        })
     }
 }
