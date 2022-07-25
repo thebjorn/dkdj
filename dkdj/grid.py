@@ -200,6 +200,9 @@ class Row(object):
         self.key = key
         self.cells = cells or []
 
+    def __repr__(self):
+        return f'Row({self.cells})'
+
     def __getitem__(self, n):
         return self.cells[n].value
 

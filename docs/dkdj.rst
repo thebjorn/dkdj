@@ -1,5 +1,13 @@
 dkdj package
 ============
+Module contents
+---------------
+
+.. automodule:: dkdj
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 
 Subpackages
 -----------
@@ -80,14 +88,6 @@ dkdj.views module
 -----------------
 
 .. automodule:: dkdj.views
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: dkdj
    :members:
    :undoc-members:
    :show-inheritance:

@@ -230,7 +230,16 @@ class GridView(SubcommandView):
     def get_json_format(self, request, gridval):
         """Return a json or jsonp response.
         """
-        return jason.response(request, gridval)
+        try:
+            return jason.response(request, gridval)
+        except ValueError as e:
+            # to make debugging easier (gridval.__repr__ calls json.dumps, so 
+            # we can't just print the value)
+            rows = gridval.rows
+            cols = gridval.cols
+            info = gridval.info
+            print("GRIDVAL:", gridval.rows, gridval.cols, gridval.info)
+            raise
 
     def csv_grid(self, gridval):
         """Override this method and convert gridval to a new Grid object
@@ -331,6 +340,8 @@ class Resultset(GridView):
                 if getattr(c, 'is_wrapper', inspect.isclass(c)):
                     col = c()
                 else:
+                    if inspect.isfunction(c):
+                        raise SyntaxError(f"You have defined a column as a function, it needs to be a class! {c}")
                     col = c
                 res.append(col)
                 self._column[col.name] = col
