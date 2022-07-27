@@ -30,7 +30,8 @@ export default {
         options = options || {expires: 'Tue, 19 Jan 2038 03:14:07 GMT', path: '/'};
         // document.cookie = '%s=%s; expires=%s'.format(key, value, options.expires);
         const val = options.raw ? value : encodeURIComponent(value);
-        document.cookie = `${encodeURIComponent(key)}=${val}; expires=${options.expires}; path=${options.path}`;
+        const samesite_policy = options.samesite ? options.samesite : 'Lax';
+        document.cookie = `${encodeURIComponent(key)}=${val}; expires=${options.expires}; path=${options.path}; SameSite=${samesite_policy}`;
     },
 
 
