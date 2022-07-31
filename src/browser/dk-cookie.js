@@ -34,6 +34,19 @@ export default {
         document.cookie = `${encodeURIComponent(key)}=${val}; expires=${options.expires}; path=${options.path}; SameSite=${samesite_policy}`;
     },
 
+    /**
+     * Convenience method to set a cookie for the enitre site.
+     * 
+     * @param {str} key 
+     * @param {str} value 
+     * @param {dict} options 
+     */
+    set_site_cookie(key, value, options) {
+        options = options || {expires: 'Tue, 19 Jan 2038 03:14:07 GMT', path: '/'};
+        options.path = '/';
+        this.set(key, value, options);
+    }
+
 
     /**
      * Remove a cookie, by expiring it in the past.
