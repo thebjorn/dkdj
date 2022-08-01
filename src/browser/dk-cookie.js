@@ -45,7 +45,7 @@ export default {
         options = options || {expires: 'Tue, 19 Jan 2038 03:14:07 GMT', path: '/'};
         options.path = '/';
         this.set(key, value, options);
-    }
+    },
 
 
     /**
