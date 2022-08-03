@@ -28,7 +28,7 @@ setuptools.setup(
     ],
     url='https://github.com/thebjorn/dkdj',
     classifiers=[line for line in classifiers.split('\n') if line],
-    long_description=open('README.md').read(),
+    long_description=open('README.rst').read(),
     license='MIT',
     author='Bjorn Pettersen',
     author_email='bp@norsktest.no',
