@@ -73,7 +73,7 @@ export default class FontAwsome4 extends IconLibrary {
         super();
         this._classes = 'fa';
         this._prefix = 'fa-';
-        this._url = "https://static.datakortet.no/font/fa470/css/font-awesome.css";
+        this._url = "https://static.datakortet.no/font/fa620/css/fontawesome.min.css";
         this.remove = 'trash-o';
         this.cancel = 'times-circle-o';
         this.up = 'chevron-up';
