@@ -21,7 +21,7 @@ setuptools.setup(
     packages=setuptools.find_packages(exclude=['tests']),
     install_requires=[
         'ttcal',
-        'dkjason>=3.0.5',
+        'dkjason>=3.0.6',
         'six',
         'future',
         'bleach',
