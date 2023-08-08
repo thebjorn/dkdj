@@ -74,8 +74,8 @@ export class PagerWidget extends Widget {
     }
     draw_range(range) {
         for (let i = range[0]; i <= range[1]; i++) {
-            const li = dk.$('<li/>', { page: i }).addClass('page').data('page', i-1);
-            li.append(dk.$('<a href="#"/>').text(i));
+            const li = dk.$('<li/>', { page: i }).addClass('page-item page').data('page', i-1);
+            li.append(dk.$('<a class="page-link" href="#"/>').text(i));
             if (i === this.curpage + 1) {
                 li.addClass('active');
             }
@@ -84,7 +84,7 @@ export class PagerWidget extends Widget {
     }
     draw() {
         this.widget().empty();
-        this.widget().append(dk.$('<li class="prev-nav"><a href="#">&laquo;</a></li>'));
+        this.widget().append(dk.$('<li class="page-item prev-nav"><a class="page-link" href="#">&laquo;</a></li>'));
 
         if (this.pagecount > 0) {
             let prerange = this._prerange(1, this.curpage - 3);
@@ -120,7 +120,7 @@ export class PagerWidget extends Widget {
             }
         }
 
-        this.widget().append(dk.$('<li class="next-nav"><a href="#">&raquo;</a></li>'));
+        this.widget().append(dk.$('<li class="page-item next-nav"><a class="page-link" href="#">&raquo;</a></li>'));
     }
 
 }
